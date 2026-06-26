@@ -1,0 +1,277 @@
+# =============================================================================
+# EEG PROJECT SPECIFICATION (Phase 1 - Project Framing)
+# =============================================================================
+# This file MUST be frozen before any modeling begins.
+# Any changes require a new experiment ID.
+# =============================================================================
+
+# Project Identification
+project:
+  name: "Multi-Disease EEG Detection"
+  version: "1.0.0"
+  experiment_id: "EXP_001"
+  created_at: "2024-01-15"
+  frozen_at: null  # Set when spec is locked
+
+# Use-Case Definition (Phase 1, Item 1)
+use_case:
+  task_type: "classification"  # classification, regression, event_detection
+  description: "Detect neurological diseases from EEG signals"
+
+  # Label Schema
+  diseases:
+    epilepsy:
+      labels: ["non_seizure", "seizure"]
+      label_type: "event"
+      ground_truth_source: "clinician_annotation"
+
+    parkinson:
+      labels: ["healthy_control", "parkinson_disease"]
+      label_type: "diagnosis"
+      ground_truth_source: "clinical_diagnosis"
+
+    schizophrenia:
+      labels: ["healthy_control", "schizophrenia"]
+      label_type: "diagnosis"
+      ground_truth_source: "dsm5_criteria"
+
+    autism:
+      labels: ["neurotypical", "autism_spectrum"]
+      label_type: "diagnosis"
+      ground_truth_source: "clinical_assessment"
+
+    depression:
+      labels: ["healthy_control", "major_depression"]
+      label_type: "diagnosis"
+      ground_truth_source: "clinical_diagnosis"
+
+    stress:
+      labels: ["low_stress", "high_stress"]
+      label_type: "state"
+      ground_truth_source: "self_report_validated"
+
+    alzheimer:
+      labels: ["CN", "MCI", "AD"]  # Cognitively Normal, Mild Cognitive Impairment, Alzheimer's Disease
+      label_type: "diagnosis"
+      ground_truth_source: "clinical_criteria"
+
+# Label Quality Requirements
+label_quality:
+  inter_rater_agreement_threshold: 0.8  # Cohen's kappa
+  adjudication_required_if_below: 0.7
+  exclude_ambiguous_labels: true
+  label_noise_handling: "exclude"  # exclude, smooth, weight
+
+# Data Scope (Phase 1, Item 2)
+data_scope:
+  primary_datasets:
+    - name: "depression_real"
+      path: "./datasets/depression_real"
+      role: "training"
+    - name: "epilepsy_real"
+      path: "./datasets/epilepsy_real"
+      role: "training"
+    - name: "schizophrenia_eeg_real"
+      path: "./datasets/schizophrenia_eeg_real"
+      role: "training"
+
+  benchmark_datasets:
+    - name: "DEAP"
+      path: "./datasets/deap_dataset"
+      role: "external_validation"
+    - name: "SEED"
+      path: "./datasets/seed_dataset"
+      role: "external_validation"
+
+  # Channel Configuration
+  channels:
+    standard_montage: "10-20"
+    common_channels:
+      - "Fp1"
+      - "Fp2"
+      - "F3"
+      - "F4"
+      - "C3"
+      - "C4"
+      - "P3"
+      - "P4"
+      - "O1"
+      - "O2"
+      - "F7"
+      - "F8"
+      - "T3"
+      - "T4"
+      - "T5"
+      - "T6"
+      - "Fz"
+      - "Cz"
+      - "Pz"
+    minimum_channels: 14
+
+  sampling:
+    target_rate_hz: 256
+    minimum_rate_hz: 128
+    resample_method: "polyphase"
+    anti_alias_filter: true
+
+  duration:
+    minimum_recording_seconds: 60
+    epoch_duration_seconds: 4
+    epoch_overlap_ratio: 0.5
+
+# Evaluation Target (Phase 1, Item 3)
+evaluation:
+  primary_metric: "macro_f1"  # For imbalanced data
+  secondary_metrics:
+    - "pr_auc"  # Preferred for imbalance
+    - "sensitivity"
+    - "specificity"
+    - "accuracy"
+
+  # Clinical constraints
+  clinical_constraints:
+    minimum_sensitivity: 0.85  # For clinical safety
+    maximum_false_positive_rate: 0.15
+
+  # Baseline thresholds (minimum acceptable)
+  baseline_thresholds:
+    macro_f1: 0.70
+    pr_auc: 0.65
+    accuracy: 0.75
+
+# Split Strategy (Phase 1, Item 4)
+split_strategy:
+  method: "subject_wise"  # CRITICAL: Never random window split
+  ratios:
+    train: 0.70
+    validation: 0.15
+    test: 0.15
+
+  # Cross-validation
+  cross_validation:
+    method: "group_kfold"  # GroupKFold by subject
+    n_folds: 5
+    stratified: true
+    group_column: "subject_id"
+
+  # Leave-One-Subject-Out (for small N)
+  loso:
+    enabled_if_subjects_below: 30
+
+  # Nested CV for HPO
+  nested_cv:
+    outer_folds: 5
+    inner_folds: 3
+
+  # Leakage prevention rules
+  leakage_prevention:
+    - "All windows from same subject in same split"
+    - "All sessions from same subject in same split"
+    - "No global statistics computed before split"
+    - "Normalization fitted on train only"
+
+# Reproducibility (Phase 1, Item 5)
+reproducibility:
+  random_seed: 42
+  deterministic_mode: true
+
+  # Version control
+  versioning:
+    data_version: "v1.0"
+    code_version: null  # Set from git hash
+    environment_file: "requirements.txt"
+
+  # Checksums
+  checksums:
+    enabled: true
+    algorithm: "sha256"
+    verify_on_load: true
+
+# Benchmark Plan (Phase 1, Item 6)
+benchmark_plan:
+  baselines:
+    classical_ml:
+      - name: "LogisticRegression"
+        features: "handcrafted"
+      - name: "SVM_RBF"
+        features: "handcrafted"
+      - name: "RandomForest"
+        features: "handcrafted"
+
+    riemannian:
+      - name: "Riemannian_MDM"
+        features: "covariance"
+      - name: "Riemannian_TSclassifier"
+        features: "tangent_space"
+
+    deep_learning:
+      - name: "EEGNet"
+        input: "raw"
+      - name: "CNN_1D"
+        input: "raw"
+      - name: "CNN_2D"
+        input: "spectrogram"
+
+  comparison_protocol:
+    same_preprocessing: true
+    same_splits: true
+    same_metrics: true
+    multiple_seeds: 5
+
+# Risk & Ethics (Phase 1, Item 7)
+risk_ethics:
+  data_privacy:
+    de_identification: true
+    no_raw_identifiers: true
+    consent_required: true
+
+  bias_considerations:
+    demographic_audit: true
+    subgroup_analysis: true
+
+  safety:
+    not_for_clinical_diagnosis: true
+    requires_clinical_validation: true
+
+# Definition of Done (Phase 1, Item 8)
+definition_of_done:
+  phase_gates:
+    phase_2_data:
+      - "metadata.csv complete"
+      - "splits.json generated"
+      - "No subject overlap verified"
+
+    phase_3_preprocessing:
+      - "QC report generated"
+      - "Artifact rejection logged"
+      - "SQI threshold met"
+
+    phase_4_normalization:
+      - "Scaler fitted on train only"
+      - "norm_stats.json saved"
+      - "Leakage audit passed"
+
+    phase_7_training:
+      - "Baseline models trained"
+      - "Training logs saved"
+      - "Best model selected"
+
+    phase_8_validation:
+      - "Nested CV complete"
+      - "CI calculated"
+      - "Calibration checked"
+
+    phase_9_testing:
+      - "Single test run only"
+      - "Statistical tests complete"
+      - "Benchmark table filled"
+
+  deliverables:
+    - "spec.yaml (frozen)"
+    - "metadata.csv"
+    - "splits.json"
+    - "norm_stats.json"
+    - "feature_list.json"
+    - "model_bundle/"
+    - "test_results.json"
+    - "model_card.md"

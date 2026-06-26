@@ -25,3 +25,32 @@ Deep-learning review of EEG-based epilepsy / seizure detection.
 ```
 texstudio code/paper/epilepsy-dl-review.tex
 ```
+
+## Cross-platform (Windows + Linux)
+The pipeline is pure-Python and OS-agnostic: it uses `pathlib.Path` for all paths
+(no hardcoded `/media` or `C:\`), no `os.system`/shell calls. All dependencies
+(`numpy`, `scipy`, `scikit-learn`, `pandas`, `mne`, `PyYAML`) ship wheels for both
+Windows and Linux.
+
+## Setup (Windows or Linux)
+```bash
+python -m venv venv
+# Linux/macOS:  source venv/bin/activate
+# Windows:      venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+## Config
+Pipeline behaviour is driven by `code/eeg_pipeline/configs/spec.yaml`
+(data splits, normalization, features, model). Edit it to change the run —
+no code changes needed.
+
+## Run
+```bash
+python code/eeg_pipeline/example_pipeline.py   # end-to-end on the data samples
+```
+
+## Backend / frontend compatible
+The pipeline is a plain importable package (`from eeg_pipeline import ...`) with no
+UI or server assumptions — call it from any FastAPI/Flask backend, a notebook, or a
+CLI. Inputs/outputs are arrays + JSON, so a frontend can consume the results directly.
