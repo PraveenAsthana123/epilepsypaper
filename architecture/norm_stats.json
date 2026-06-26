@@ -1,0 +1,53 @@
+{
+  "_metadata": {
+    "description": "Train-only normalization statistics - LEAKAGE SAFE",
+    "created_at": null,
+    "fitted_on": "train_split_only",
+    "spec_version": "1.0.0",
+    "normalization_type": "channel_wise_zscore",
+    "data_hash": null
+  },
+  "_warnings": [
+    "These statistics MUST only be computed from training data",
+    "DO NOT recompute on validation or test data",
+    "Load and apply directly to val/test"
+  ],
+  "global_stats": {
+    "n_samples": 0,
+    "n_channels": 0,
+    "n_timepoints": 0
+  },
+  "channel_wise": {
+    "Fp1": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0},
+    "Fp2": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0},
+    "F3": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0},
+    "F4": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0},
+    "C3": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0},
+    "C4": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0},
+    "P3": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0},
+    "P4": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0},
+    "O1": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0},
+    "O2": {"mean": 0.0, "std": 1.0, "median": 0.0, "iqr": 1.0, "n_samples": 0}
+  },
+  "bandpower_stats": {
+    "delta": {"mean": 0.0, "std": 1.0, "log_epsilon": 1e-10},
+    "theta": {"mean": 0.0, "std": 1.0, "log_epsilon": 1e-10},
+    "alpha": {"mean": 0.0, "std": 1.0, "log_epsilon": 1e-10},
+    "beta": {"mean": 0.0, "std": 1.0, "log_epsilon": 1e-10},
+    "gamma": {"mean": 0.0, "std": 1.0, "log_epsilon": 1e-10}
+  },
+  "tfr_frequency_bin_stats": {
+    "description": "Per-frequency-bin z-score for TFR images",
+    "frequency_bins": [],
+    "bin_means": [],
+    "bin_stds": []
+  },
+  "scaler_pickle_path": null,
+  "verification": {
+    "train_mean_near_zero": false,
+    "train_std_near_one": false,
+    "no_inf_values": false,
+    "no_nan_values": false,
+    "verified_at": null
+  }
+}

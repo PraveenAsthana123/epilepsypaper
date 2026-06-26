@@ -1,0 +1,84 @@
+{
+  "_metadata": {
+    "description": "Subject-wise data split manifest - LEAKAGE PREVENTION",
+    "created_at": null,
+    "spec_version": "1.0.0",
+    "split_method": "subject_wise",
+    "random_seed": 42,
+    "data_hash": null
+  },
+  "_validation": {
+    "no_subject_overlap": true,
+    "stratified_by_label": true,
+    "verified_at": null,
+    "verified_by": null
+  },
+  "datasets": {
+    "depression_real": {
+      "total_subjects": 0,
+      "total_windows": 0,
+      "class_distribution": {
+        "healthy_control": 0,
+        "major_depression": 0
+      },
+      "splits": {
+        "train": {
+          "subject_ids": [],
+          "n_subjects": 0,
+          "n_windows": 0,
+          "class_counts": {}
+        },
+        "validation": {
+          "subject_ids": [],
+          "n_subjects": 0,
+          "n_windows": 0,
+          "class_counts": {}
+        },
+        "test": {
+          "subject_ids": [],
+          "n_subjects": 0,
+          "n_windows": 0,
+          "class_counts": {}
+        }
+      }
+    },
+    "epilepsy_real": {
+      "total_subjects": 0,
+      "total_windows": 0,
+      "class_distribution": {},
+      "splits": {
+        "train": {"subject_ids": [], "n_subjects": 0, "n_windows": 0, "class_counts": {}},
+        "validation": {"subject_ids": [], "n_subjects": 0, "n_windows": 0, "class_counts": {}},
+        "test": {"subject_ids": [], "n_subjects": 0, "n_windows": 0, "class_counts": {}}
+      }
+    },
+    "schizophrenia_eeg_real": {
+      "total_subjects": 0,
+      "total_windows": 0,
+      "class_distribution": {},
+      "splits": {
+        "train": {"subject_ids": [], "n_subjects": 0, "n_windows": 0, "class_counts": {}},
+        "validation": {"subject_ids": [], "n_subjects": 0, "n_windows": 0, "class_counts": {}},
+        "test": {"subject_ids": [], "n_subjects": 0, "n_windows": 0, "class_counts": {}}
+      }
+    }
+  },
+  "cross_validation_folds": {
+    "method": "GroupKFold",
+    "n_folds": 5,
+    "group_column": "subject_id",
+    "folds": [
+      {
+        "fold_id": 0,
+        "train_subjects": [],
+        "val_subjects": []
+      }
+    ]
+  },
+  "_leakage_checks": {
+    "train_val_overlap": [],
+    "train_test_overlap": [],
+    "val_test_overlap": [],
+    "all_checks_passed": false
+  }
+}
