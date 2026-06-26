@@ -1,3 +1,6 @@
 # Model
-
-No trained model binary (.pt/.h5/.pkl) was found on disk for this paper. The training code is in `/code/eeg_pipeline/training.py`; the architecture is documented in `/architecture/model_card.md`. Re-run training to produce a model artifact.
+**RandomForest(300, balanced)** on engineered EEG features (see accuracy/README.md).
+The model is defined + trained reproducibly in `code/reproducible/chbmit_loso_pipeline.py`
+and `code/eeg_pipeline/training.py`. No pickled binary is committed (subject-dependent,
+retrained per LOSO fold); run the pipeline to regenerate. Real per-fold metrics in
+`accuracy/chbmit_loso_results.json`.

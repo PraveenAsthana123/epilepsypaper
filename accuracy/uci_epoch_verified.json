@@ -1,0 +1,4 @@
+{"dataset":"UCI Epileptic Seizure Recognition (11500 segments, 178 features)",
+ "protocol":"5-fold stratified (epoch-level)","model":"RandomForest(300, class_weight=balanced, seed=42)",
+ "accuracy":0.9699,"auc":0.9958,"sensitivity":0.8839,"specificity":0.9914,"ppv":0.9626,"f1":0.9216,
+ "verified":"2026-06-26 re-run on real data","reproduce":"python code/verify_uci_epoch_level.py"}
