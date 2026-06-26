@@ -9,7 +9,7 @@ Deep-learning review of EEG-based epilepsy / seizure detection.
 | `code/paper/` | LaTeX source (`.tex` + `.bib`) — **edit in TeXstudio**, recompile to PDF |
 | `code/eeg_pipeline/` | EEG ML pipeline (preprocessing → features → training → benchmarking → validation) |
 | `architecture/` | Model card + data-split + normalization-stats configs |
-| `data-samples/` | **10-row sample per dataset** (CHB-MIT, Bonn, Siena) — illustrative only |
+| `data-samples/` | **10-row sample per dataset** (CHB-MIT, Siena) — illustrative only |
 | `accuracy/` | How metrics are computed (results in the paper) |
 | `model/` | Training entry point (no trained binary committed) |
 | `images/` | Figures (this review is text-only — none) |

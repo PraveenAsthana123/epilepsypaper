@@ -23,7 +23,7 @@ graph TD
 | # | Step | Status | Where in this repo |
 |---|---|---|---|
 | 1 | Objective | ✅ | README — patient-independent seizure detection |
-| 2 | Data collection | ✅ | `data-samples/` (CHB-MIT/Bonn/Siena 10-row) + real datasets named |
+| 2 | Data collection | ✅ | `data-samples/` (CHB-MIT/Siena 10-row) + real datasets named |
 | 3 | Standardize (EDF→arrays) | ✅ | `code/reproducible/chbmit_loso_pipeline.py` (pyedflib), `code/eeg_pipeline/data_conversion.py` |
 | 4 | Raw QC | 📁 | `code/eeg_pipeline/outlier_analysis.py`, `eda_analysis.py` |
 | 5 | Preprocess (bandpass/notch/re-ref/ICA) | 📁 | `code/eeg_pipeline/filter_analysis.py`, `preprocessing.py` |
