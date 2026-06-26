@@ -1,0 +1,93 @@
+{
+  "model": "RandomForest(300,balanced)",
+  "subjects": [
+    "chb01",
+    "chb02",
+    "chb03"
+  ],
+  "n_epochs": 657,
+  "n_seizure": 73,
+  "feature_importance_top": [
+    {
+      "feature": "mean_hjorth_activity",
+      "importance": 0.29515617271563643
+    },
+    {
+      "feature": "mean_rms",
+      "importance": 0.22579379489125323
+    },
+    {
+      "feature": "mean_line_length",
+      "importance": 0.15740405561933965
+    },
+    {
+      "feature": "std_rms",
+      "importance": 0.03967280404523783
+    },
+    {
+      "feature": "mean_theta_power",
+      "importance": 0.038562933705396
+    },
+    {
+      "feature": "std_hjorth_activity",
+      "importance": 0.035303420431638054
+    },
+    {
+      "feature": "std_theta_power",
+      "importance": 0.028474032859068802
+    },
+    {
+      "feature": "std_line_length",
+      "importance": 0.02798404591195336
+    },
+    {
+      "feature": "std_beta_power",
+      "importance": 0.026567533077363526
+    },
+    {
+      "feature": "std_hjorth_mobility",
+      "importance": 0.02218775847007043
+    },
+    {
+      "feature": "std_gamma_power",
+      "importance": 0.019348612686673004
+    },
+    {
+      "feature": "mean_gamma_power",
+      "importance": 0.015558438993961086
+    },
+    {
+      "feature": "std_delta_power",
+      "importance": 0.012800869225558481
+    },
+    {
+      "feature": "std_hjorth_complexity",
+      "importance": 0.012765437655087914
+    },
+    {
+      "feature": "mean_beta_power",
+      "importance": 0.01009679327029248
+    },
+    {
+      "feature": "std_alpha_power",
+      "importance": 0.009196034132672825
+    },
+    {
+      "feature": "mean_alpha_power",
+      "importance": 0.0067528984172843575
+    },
+    {
+      "feature": "mean_hjorth_complexity",
+      "importance": 0.006414938708041077
+    },
+    {
+      "feature": "mean_hjorth_mobility",
+      "importance": 0.005305481647161984
+    },
+    {
+      "feature": "mean_delta_power",
+      "importance": 0.004653943536309565
+    }
+  ],
+  "shap_summary": "images/shap_summary.png"
+}
