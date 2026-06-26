@@ -54,3 +54,17 @@ python code/eeg_pipeline/example_pipeline.py   # end-to-end on the data samples
 The pipeline is a plain importable package (`from eeg_pipeline import ...`) with no
 UI or server assumptions — call it from any FastAPI/Flask backend, a notebook, or a
 CLI. Inputs/outputs are arrays + JSON, so a frontend can consume the results directly.
+
+## Architecture (23-step EEG→AI→RAG, §162)
+See `ARCHITECTURE.md` for the full 23-step flow + Mermaid diagram mapped to this repo's code.
+This paper implements the classical-ML path (steps 1–16); DL-image, XAI, and RAG steps are
+documented and marked ⚠️ (not implemented in this honest-evaluation study).
+
+## Documentation map
+| Doc | Covers |
+|---|---|
+| `ARCHITECTURE.md` | 23-step flow + Mermaid + code mapping |
+| `METHODOLOGY.md` | model/loss/gradient · hyperparameters · SMOTE · bias · outliers · normalization · structured/unstructured · balanced/unbalanced — with justification |
+| `ANALYSIS.md` | runs/training-count · 12 analyses · signal chain |
+| `accuracy/COMPREHENSIVE_METRICS.md` | ALL metrics (acc/precision/recall/F1/AUC/spec/MCC/kappa) + confusion matrix + per-subject statistics |
+| `OUTPUT_EVALUATION.md` | ORF output evaluation + RAGAS contract |
