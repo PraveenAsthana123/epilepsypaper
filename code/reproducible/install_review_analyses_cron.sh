@@ -6,8 +6,9 @@
 #   status:   install_review_analyses_cron.sh status
 set -uo pipefail
 
-REPO="/media/praveen/Asthana4/rajveer/agenticfinder/epilepsypaper-ready"
-VENV="/media/praveen/praveenlinux21/praveen/aman/cuda/venv/bin/python"
+# Override REPO/VENV via env if needed; defaults resolve to this repo + system python3.
+REPO="${REPO:-$(cd "$(dirname "$0")/../.." && pwd)}"
+VENV="${VENV:-python3}"
 TAG="# EPILEPSY-REVIEW-ANALYSES (Ollama §164)"
 LINE="*/30 * * * * cd $REPO && $VENV code/reproducible/run_review_analyses_ollama.py --batch 2 >> $REPO/.loop/review_analyses/cron.log 2>&1 $TAG"
 

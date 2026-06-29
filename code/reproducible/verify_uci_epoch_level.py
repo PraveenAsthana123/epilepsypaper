@@ -1,9 +1,11 @@
 """Re-run the epoch-level UCI Epileptic Seizure Recognition benchmark on REAL data — verify the paper's number."""
+import os, sys
 import pandas as pd, numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from sklearn.metrics import accuracy_score, roc_auc_score, recall_score, precision_score, f1_score, confusion_matrix
-CSV="/media/praveen/Asthana4/ upgrad/synopysis/FINAL_THESIS_LATEX_EXPERIMENT/singledisease_Epilepsy/data/eeg/Epileptic Seizure Recognition.csv"
+# Point UCI_CSV (env) or argv[1] at the public UCI "Epileptic Seizure Recognition" CSV.
+CSV = os.environ.get("UCI_CSV", sys.argv[1] if len(sys.argv) > 1 else "data/Epileptic Seizure Recognition.csv")
 df=pd.read_csv(CSV)
 print("shape:",df.shape,"| last col (label) values:",sorted(df.iloc[:,-1].unique()))
 # UCI: col 'y' 1=seizure, 2-5=non-seizure → binary

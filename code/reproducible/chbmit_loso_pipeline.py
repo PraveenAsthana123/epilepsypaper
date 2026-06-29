@@ -16,7 +16,7 @@ line-length + RMS), mean across channels -> RandomForest -> LOSO CV.
 Output: data/eeg/chbmit/chbmit_loso_results.json + chbmit_loso_summary.md
 """
 from __future__ import annotations
-import re, json, sys, random, warnings
+import os, re, json, sys, random, warnings
 from pathlib import Path
 import numpy as np
 warnings.filterwarnings("ignore")
@@ -28,7 +28,9 @@ from sklearn.metrics import roc_auc_score, confusion_matrix
 
 ROOT = Path(__file__).resolve().parents[2]
 # Full 24-case cohort: flat EDF copy + summaries fetched from PhysioNet.
-FLAT = Path("/media/praveen/Asthana4/rajveer/agenticfinder/datasets/epilepsy_real")
+# Point CHBMIT_DIR (env) or argv[1] at your local CHB-MIT EDF directory; the
+# corpus itself is large patient data and is NOT shipped in this repo.
+FLAT = Path(os.environ.get("CHBMIT_DIR", sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "data" / "chbmit_edf")))
 SUMM_DIR = FLAT / "_summaries"
 OUT = ROOT / "data" / "eeg" / "chbmit"; OUT.mkdir(parents=True, exist_ok=True)
 SF = 256; EPOCH_S = 8; EPOCH_N = SF*EPOCH_S
