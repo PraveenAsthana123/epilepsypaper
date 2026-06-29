@@ -49,11 +49,11 @@ Every choice below is justified and tied to the real pipeline in `code/`. Status
 | **Subgroup/fairness bias (age/sex)** | ⚠️ | not yet computed — add per-group sensitivity + disparate-impact (§76) |
 
 ## Outliers
-- `code/eeg_pipeline/outlier_analysis.py` (📁) — amplitude/variance-based bad-epoch + bad-channel
-  detection. RF is inherently robust to outliers (tree splits), reducing their impact. ✅ robust by design.
+- Dedicated bad-epoch/bad-channel detection is not included in this repo (📁). RF is inherently
+  robust to outliers (tree splits), reducing their impact. ✅ robust by design.
 
 ## Normalization & standardization
-- `code/eeg_pipeline/normalization.py` (📁): Z-score (zero-mean/unit-var) + MinMax options.
+- `code/reproducible/chbmit_loso_pipeline.py`: Z-score (zero-mean/unit-var) standardization via StandardScaler.
 - **Leakage-safe (§74)**: statistics fit on the TRAIN fold only, applied to the held-out subject. ✅
 - Band-power features are relative (normalized by total power) → robust to per-recording amplitude scale. ✅
 

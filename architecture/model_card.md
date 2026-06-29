@@ -111,10 +111,9 @@
 
 To reproduce results:
 ```bash
-python -m eeg_pipeline.example_pipeline \
-    --disease {{DISEASE_LOWER}} \
-    --seed {{RANDOM_SEED}} \
-    --output_dir ./results
+# CHB-MIT Leave-One-Subject-Out (seed fixed at 42 in-script)
+CHBMIT_DIR=/path/to/chbmit_edf python code/reproducible/chbmit_loso_pipeline.py
+python code/reproducible/comprehensive_accuracy_analysis.py   # -> accuracy/comprehensive_metrics.json
 ```
 
 ## Citation

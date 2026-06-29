@@ -31,18 +31,18 @@ PyYAML (config) · matplotlib/seaborn (viz). Cross-platform (Win/Linux), pure-Py
 ## The 12 analyses (mapped to real code)
 | Analysis | Status | Where |
 |---|---|---|
-| **Performance AI** | ✅ | `accuracy/*.json` (acc/F1/AUC/sens/spec), `eeg_pipeline/benchmarking.py`, `metrics.py` |
-| **Statistical AI** | ✅ | per-fold mean ± spread across 24 subjects; `eeg_pipeline/metrics.py` (CIs) |
+| **Performance AI** | ✅ | `accuracy/*.json` (acc/F1/AUC/sens/spec) computed by `code/reproducible/comprehensive_accuracy_analysis.py` |
+| **Statistical AI** | ✅ | per-fold mean ± spread across 24 subjects; bootstrap CIs in `code/reproducible/comprehensive_accuracy_analysis.py` |
 | **Sensitivity analysis** | ✅ | the core finding: sensitivity 88.4%→35.1% under epoch→LOSO protocol change |
 | **Subjective / subject-wise** | ✅ | per-subject `per_fold[]` in `chbmit_loso_results.json` (24 subjects), subject-wise CV (§83) |
-| **Reliability** | 📁 | `eeg_pipeline/reliability_analysis.py` (ICC, test-retest) |
-| **Clinical validation** | ✅ | PPV 0.70 / NPV 0.92 / sens / spec — `eeg_pipeline/clinical_validation.py` |
-| **Interpretable AI** | 📁 | RandomForest = inherently interpretable; feature-importance via `eeg_pipeline/feature_selection.py` |
-| **Explainable AI (ExpAI)** | ⚠️ | SHAP not yet wired — add `shap` over the RF in `chbmit_loso_pipeline.py` |
+| **Reliability** | 📁 | ICC / test-retest not computed (not included in this repo) |
+| **Clinical validation** | ✅ | PPV 0.70 / NPV 0.92 / sens / spec — `code/reproducible/comprehensive_accuracy_analysis.py` |
+| **Interpretable AI** | ✅ | RandomForest = inherently interpretable; feature importance via `code/reproducible/xai_feature_importance.py` |
+| **Explainable AI (ExpAI)** | ✅ | SHAP (TreeExplainer over the RF) in `code/reproducible/xai_feature_importance.py` → `accuracy/xai_feature_importance.json`, `images/shap_summary.png` |
 | **Responsible AI (ResAI)** | ⚠️ | fairness across subgroups not computed (paediatric cohort); add per-group parity |
 | **Governance AI (Gov AI)** | 📁 | honest-evaluation finding IS the governance signal (no over-claim); model card in `architecture/model_card.md` |
-| **EDA** | 📁 | `eeg_pipeline/eda_analysis.py` |
-| **Outlier / filter / feature** | 📁 | `eeg_pipeline/{outlier,filter,feature_engineering}_analysis.py` |
+| **EDA** | 📁 | standalone EDA module not included in this repo |
+| **Outlier / filter / feature** | ✅ | filtering + band-power/Hjorth/line-length feature extraction done inline in `code/reproducible/chbmit_loso_pipeline.py` |
 
 ## Justification (paper's central claim)
 Identical feature+RF pipeline, two evaluation protocols → epoch-level overstates real-world
@@ -51,17 +51,16 @@ is **35.1% sensitivity / 0.846 AUC** on CHB-MIT, not the 88% epoch-level figure.
 report LOSO, not epoch-level.
 
 ## To complete the ⚠️ items
-- ExpAI: `pip install shap`; compute SHAP on the trained RF, save plots to `images/`.
 - ResAI: compute sensitivity/specificity per age/sex subgroup; check disparate-impact ≥ 0.8 (§76).
 - Training time + MLflow: wrap each fold with timing + `mlflow.log_metrics`.
 
 ## Signal-processing / preprocessing chain (real modules)
 | Step | Status | Where | Notes |
 |---|---|---|---|
-| **Data conversion** (EDF → arrays/epochs) | ✅ | `code/eeg_pipeline/data_conversion.py`, `data_loader.py`; EDF read via `pyedflib`/`mne` | 8 s epochs |
-| **Filtering** (band-pass / notch) | 📁 | `code/eeg_pipeline/filter_analysis.py`, `preprocessing.py` | remove drift + line noise |
-| **Standardization** (zero-mean/unit-var) | 📁 | `code/eeg_pipeline/normalization.py` | per-channel, fit on train fold only (no leakage, §74) |
-| **Normalization** (min-max / scaling) | 📁 | `code/eeg_pipeline/normalization.py` | config-selectable |
+| **Data conversion** (EDF → arrays/epochs) | ✅ | `code/reproducible/chbmit_loso_pipeline.py`; EDF read via `mne`, 8 s epoching (inline) | 8 s epochs |
+| **Filtering** (band-pass / notch) | ✅ | `code/reproducible/chbmit_loso_pipeline.py` — 0.5–40 Hz Butterworth (inline) | remove drift + line noise |
+| **Standardization** (zero-mean/unit-var) | ✅ | `code/reproducible/chbmit_loso_pipeline.py` — StandardScaler | per-channel, fit on train fold only (no leakage, §74) |
+| **Normalization** (min-max / scaling) | 📁 | standardization used instead (above); min-max not applied | — |
 | **Fourier transform** (spectral features) | ✅ | δθαβγ **band-power** features in `chbmit_loso_pipeline.py` | FFT/PSD → 5 bands per channel |
 
 Leakage-safe rule (§74): normalization + standardization statistics are fit on the **training**

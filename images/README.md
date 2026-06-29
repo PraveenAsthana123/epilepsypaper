@@ -1,3 +1,11 @@
 # Images
 
-The epilepsy review (epilepsy-dl-review) is a text-only paper — its `.tex` references 0 figures, so there are no per-paper images. Architecture diagrams (if added later) go here.
+Figures produced by the reproducible analysis (`code/reproducible/`):
+
+- `confusion_matrix.png` — aggregate CHB-MIT LOSO confusion matrix
+- `per_subject_auc.png` — per-subject AUC across the 24 CHB-MIT subjects
+- `feature_importance.png` — RandomForest feature importances (20-D vector)
+- `shap_summary.png` — SHAP summary over the RF (`xai_feature_importance.py`)
+
+The papers themselves typeset their figures from data in LaTeX/TikZ (radar, bar charts), so
+not every paper figure has a PNG here.
