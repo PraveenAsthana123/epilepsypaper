@@ -1,0 +1,68 @@
+\section{Clinical Problem Domains and Stakeholders}
+A clinically grounded review must frame the technology against the workflow it serves. Table~\ref{tab:probdom} maps the principal problem domains to their sub-problems. Across these, prior systematic reviews \citep{rev_frontiers25,rev_seizpred25,rev_prisma26,einshoka23,amrani21,yuan22} converge on the same conclusion: technical accuracy has outpaced clinical translation.
+\begin{table}[t]\centering\caption{Clinical problem domains.}\label{tab:probdom}
+\footnotesize\begin{tabular}{ll}\toprule
+Problem & Sub-problems\\\midrule
+Early diagnosis & delay, specialist scarcity, misdiagnosis\\
+Seizure detection & false alarms, missed seizures, artefacts\\
+Seizure prediction & short horizon, low sensitivity\\
+Classification & generalized vs focal, subtype\\
+Treatment selection & drug resistance, optimisation\\
+Patient monitoring & continuous, home, ambulatory\\
+Emergency response & delayed caregiver notification\\
+Quality of life & sleep, cognition, depression\\
+Documentation & manual EEG interpretation\\
+Explainability & clinician trust\\
+Governance & transparency, accountability\\\bottomrule
+\end{tabular}\end{table}
+The stakeholders span patient, caregiver, neurologist, epileptologist, EEG technician, emergency physician, psychiatrist, neuropsychologist, primary-care physician, hospital administrator, AI engineer, data scientist, researcher, and regulator---each with distinct trust and accountability requirements that a deployed system must satisfy simultaneously.
+
+\section{Functional Use Cases}
+The clinical use cases cluster into five families: \textbf{diagnosis} (EEG/MRI interpretation, EEG+MRI fusion, decision support), \textbf{detection} (real-time seizure, artefact, spike, high-frequency-oscillation), \textbf{prediction} (pre-ictal, early-warning, risk), \textbf{monitoring} (home, ICU, ambulatory, wearable, remote), and \textbf{treatment} (medication recommendation, surgical planning, neurostimulation optimisation, outcome prediction). A governed platform must host all five behind one auditable interface, since a patient's journey traverses several.
+
+\section{Technical Taxonomy of AI Methods}
+The technical literature spans nine method families (Table~\ref{tab:tech}). Classical ML \citep{shah22,alharthi22,zhao23,ijaz24} remains a transparent baseline; deep learning \citep{tawhid22,zhang22,das24,dong24,darankoum24} dominates; transformers \citep{ke22,rukhsar23,ru24,wu22,potter23,chen24} are ascendant; foundation, generative, and agentic methods are emerging. Cross-subject transfer learning \citep{zhang20} is a recurring strategy for the generalisation problem central to this review.
+\begin{table}[t]\centering\caption{Technical taxonomy of AI methods in epilepsy.}\label{tab:tech}
+\footnotesize\begin{tabular}{ll}\toprule
+Family & Members\\\midrule
+Classical ML & RF, SVM, XGBoost, LightGBM, kNN, NB, LR\\
+Deep learning & 1D/2D/3D CNN, ResNet, DenseNet, EfficientNet, EEGNet\\
+Sequential & LSTM, BiLSTM, GRU, TCN\\
+Transformer & ViT, EEG/temporal/Swin transformer\\
+Foundation / LLM & GPT, Llama, Mistral, Gemma, Qwen\\
+Generative / RAG & report gen, summarisation, Q\&A, copilot, RAG\\
+Computer vision & spectrogram, scalogram, MRI, video, pose\\
+Signal processing & FFT, STFT, wavelet, PSD, HHT, EMD, Hjorth, entropy\\
+Multimodal & EEG+MRI / video / EMR / wearable / notes\\\bottomrule
+\end{tabular}\end{table}
+
+\section{System Architectures and Healthcare Pipeline}
+Deployment architectures range across centralized, cloud, edge, federated, hybrid, TinyML, digital-twin, multi-agent, and event-driven/microservice patterns. The canonical healthcare pipeline is: patient $\rightarrow$ wearable EEG $\rightarrow$ mobile app $\rightarrow$ IoT gateway $\rightarrow$ cloud $\rightarrow$ data lake $\rightarrow$ preprocessing $\rightarrow$ feature engineering $\rightarrow$ AI model $\rightarrow$ XAI layer $\rightarrow$ clinical validation $\rightarrow$ neurologist dashboard $\rightarrow$ EMR integration $\rightarrow$ patient feedback $\rightarrow$ continuous learning. Most surveyed works occupy only the preprocessing-to-model segment; the governance, XAI, validation, and feedback segments---where clinical trust is won or lost---are largely unaddressed.
+
+\section{Remote Monitoring and Wearable Devices}
+Continuous, out-of-clinic monitoring is a major growth area (Table~\ref{tab:wear}). Data sources extend beyond EEG to ECG, SpO$_2$, accelerometry, gyroscope, camera, and medication apps, supporting tasks from seizure detection to fall detection, SOS alerting, and caregiver/doctor notification. The modelling challenge is the quality--accessibility tradeoff: minimal behind-the-ear or in-ear devices maximise wearability but minimise signal fidelity, making the triage-with-escalation posture essential.
+\begin{table}[t]\centering\caption{Wearable device classes and signals.}\label{tab:wear}
+\footnotesize\begin{tabular}{ll}\toprule
+Device & Primary signal\\\midrule
+EEG headband / smart cap & scalp EEG (low density)\\
+Ear-EEG / in-ear & behind-ear EEG\\
+Smart watch / ring & PPG, accelerometry, HR\\
+ECG patch / chest sensor & cardiac, motion\\
+Smart glasses / camera & video, pose\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Classification, Prediction, and Detection Tasks}
+The field's tasks form a structured space (Table~\ref{tab:tasks3}): classification (epilepsy vs healthy, seizure vs non-seizure, generalized vs focal, multi-class subtype, drug-resistant vs responsive, artefact vs true, sleep-stage), prediction (seizure, risk, SUDEP, drug response, surgical outcome, readmission, mortality), and detection (spike, seizure, artefact, high-frequency oscillation, motion). Each task has distinct data, metric, and safety profiles, and a comprehensive platform must accommodate the structured task space rather than a single endpoint.
+\begin{table}[t]\centering\caption{Task taxonomy.}\label{tab:tasks3}
+\footnotesize\begin{tabular}{ll}\toprule
+Family & Tasks\\\midrule
+Classification & epilepsy/healthy, seizure/non, focal/generalized, subtype, drug-resistance\\
+Prediction & seizure, risk, SUDEP, drug response, surgical outcome\\
+Detection & spike, seizure, artefact, HFO, motion\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Generative AI, RAG, and Agentic AI in Neurology}
+The newest and least-explored frontier is generative and agentic AI. Use cases include EEG-report generation, clinical documentation, discharge summaries, literature search, and clinician copilots; retrieval-augmented generation grounds these in clinical guidelines, prior reports, and the research corpus, directly addressing the hallucination risk of ungrounded LLMs. Agentic decomposition---an EEG-analysis agent, artefact-detection agent, diagnosis agent, explainability agent, governance agent, and audit agent operating under a policy gate---offers a path to auditable automation. Explainability methods (SHAP, LIME, Grad-CAM, integrated gradients, attention, counterfactual) \citep{gabeff21,raab22,vieira23,rathod22,mansour20,patil26,zhao23,ijaz24} and responsible-AI controls (fairness, bias, transparency, accountability, privacy, governance, human-in-the-loop, auditability, regulatory compliance) are prerequisites, not add-ons, for this frontier. This is precisely the gap the present review's forward architecture targets, and the dimension on which the surveyed literature is most silent.
+
+\section{Recommended Field Taxonomy}
+Synthesising the clinical and technical perspectives, we recommend organising the field into fourteen chapters: (1) clinical problems and functional requirements; (2) epilepsy workflow and stakeholders; (3) data sources and modalities; (4) signal processing and feature engineering; (5) machine learning; (6) deep learning; (7) transformer and foundation models; (8) generative AI, RAG, and agentic AI; (9) computer vision and multimodal; (10) wearables and remote monitoring; (11) explainable and responsible AI; (12) system architectures (cloud, edge, federated, IoT); (13) clinical validation and deployment; (14) gaps and future directions. This taxonomy integrates medical, engineering, and governance perspectives rather than focusing on algorithms alone---the hallmark of a comprehensive Q1 review.

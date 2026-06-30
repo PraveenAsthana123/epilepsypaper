@@ -1,0 +1,262 @@
+\documentclass[10pt,journal,twocolumn]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,booktabs,graphicx,xcolor,siunitx,longtable}
+\usepackage{tikz}\usetikzlibrary{shapes.geometric,arrows.meta,positioning,fit}
+\usepackage{pgfplots}\pgfplotsset{compat=1.17}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\arraystretch}{1.18}
+\title{\textbf{From Epoch-Level Illusion to Governed Deployment:\\ A Systematic Review of 50 Recent Works on EEG Epilepsy AI\\ and the Path to Governed, Agentic Deployment}}
+\author{P.~Asthana,~\IEEEmembership{NeuroAI Research Group}}
+\date{\today}
+\begin{document}\maketitle
+
+\begin{abstract}
+\noindent Automated EEG seizure detection is reported above 95\% accuracy across hundreds of studies, yet deployment in patient-independent clinical settings remains rare. This systematic review of 50 works (2021--2026) argues that the discrepancy is rooted in an \emph{evaluation-honesty} gap: most reported accuracy is obtained under epoch-level cross-validation, which leaks subject-specific information. We synthesise the corpus along eight architecture families, five task formulations, six public datasets, and two evaluation regimes; quantify the epoch-vs-subject-wise gap (a companion empirical study finds a 53-point sensitivity collapse on an identical pipeline); and catalogue fifteen field-level gaps. We then propose a forward deployment architecture---multi-agent governance, retrieval-augmented explanation, Model Context Protocol tooling, and AIOps monitoring---that the surveyed literature omits. We position Responsible, Explainable, and Interpretable AI as first-class reporting metrics and release the curated corpus.
+\end{abstract}
+
+\noindent\textbf{Keywords:} EEG, epilepsy, seizure detection, systematic review, Leave-One-Subject-Out, data leakage, transformer, graph neural network, foundation model, responsible AI, retrieval-augmented generation, Model Context Protocol, AIOps.
+
+\section{Introduction and Scope}
+Epilepsy affects approximately 50 million people, and EEG remains the diagnostic gold standard \citep{ep241003385}. The last five years produced an explosion of deep-learning detectors \citep{ep250820535,ep251108861,ep260113234}, but two questions remain inadequately answered by the literature taken as a whole: (i) \emph{is the reported accuracy honest for unseen patients?} and (ii) \emph{what does a clinically deployable, governed system actually require beyond the model?} This review addresses both. Its scope is recent (2021--2026), peer-reviewed and pre-print EEG epilepsy AI, covering detection, prediction, onset localisation, type classification, and interictal-biomarker tasks across scalp, intracranial, and consumer-grade acquisition.
+
+\textbf{Why another review.} Existing surveys catalogue architectures and datasets but rarely (a) frame evaluation honesty as the central validity threat, (b) treat Responsible/Explainable/Interpretable AI as measurable axes, or (c) specify the agentic, retrieval-grounded, governed deployment layer. This review does all three.
+
+\section{Review Methodology}
+We followed a PRISMA-style protocol. \textbf{Search.} arXiv, PubMed, and IEEE/Elsevier indices were queried with combinations of \{EEG, epilepsy, seizure\} $\times$ \{detection, prediction, deep learning, transformer, graph, foundation model, Emotiv, consumer\}. \textbf{Window.} 2021--2026. \textbf{Inclusion.} EEG-based epilepsy/seizure tasks with a learning component and a reported metric. \textbf{Exclusion.} non-EEG modality only, no quantitative evaluation, or duplicate pre-print/published pairs. \textbf{Yield.} 50 works retained. Table~\ref{tab:prisma} summarises the funnel.
+\begin{table}[h]\centering\caption{PRISMA-style screening funnel.}\label{tab:prisma}
+\begin{tabular}{lc}\toprule
+Stage & Count\\\midrule
+Records identified & $\sim$220\\
+After de-duplication & 140\\
+Screened on title/abstract & 95\\
+Full-text assessed & 64\\
+\textbf{Included in synthesis} & \textbf{50}\\\bottomrule
+\end{tabular}\end{table}
+
+\input{_scopus}
+\input{_clinical}
+\input{_reviz}
+\input{_bibmatrix}
+
+\section{Taxonomy of the Field}
+We organise the corpus along five axes (Table~\ref{tab:taxo}): \emph{architecture} (how the model is built), \emph{task} (what it predicts), \emph{data} (acquisition + dataset), \emph{evaluation} (epoch vs subject-wise), and \emph{governance} (explainability, fairness, deployment). The last axis is where the literature is thinnest.
+\begin{table}[h]\centering\caption{Five-axis taxonomy of epilepsy-EEG AI.}\label{tab:taxo}
+\footnotesize\begin{tabular}{ll}\toprule
+Axis & Categories\\\midrule
+Architecture & CNN · RNN/LSTM · Transformer · Graph · Foundation · SSM · Classical\\
+Task & detection · prediction · onset · type · interictal biomarker\\
+Data & scalp · stereo-EEG · consumer · neonatal\\
+Evaluation & epoch-level · subject-wise (LOSO) · cross-dataset\\
+Governance & interpretability · fairness · audit · deployment\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Novelty and Contributions of This Review}
+Beyond synthesis, this review makes six contributions (Table~\ref{tab:contrib}).
+\begin{table}[h]\centering\caption{Six contributions distinguishing this review.}\label{tab:contrib}
+\footnotesize\begin{tabular}{cl}\toprule
+\# & Contribution\\\midrule
+1 & Evaluation-honesty lens + empirical 53-pt epoch-vs-LOSO gap\\
+2 & Deployment-architecture taxonomy (agentic+RAG+MCP+AIOps)\\
+3 & ResAI/ExpAI/Interpretable AI as first-class metrics\\
+4 & Unified cross-architecture/dataset/task comparison\\
+5 & Consumer-grade (Emotiv) deployment thread isolated\\
+6 & Reproducibility-first agenda + curated corpus release\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Architecture Synthesis I: Convolutional Networks}
+CNNs remain the workhorse of seizure detection, evolving from compact abnormality detectors \citep{ep210510358} to expert-level scaled networks for neonatal EEG \citep{ep240509911} and accuracy-constrained pruned variants for efficient on-device inference \citep{ep250905190}. Temporal convolution (TCN) variants such as PaperNet trade depth for receptive field. CNNs excel at local spectro-temporal motif extraction but, evaluated epoch-wise, overstate patient-independent performance: their inductive bias captures recording-specific texture as readily as seizure physiology.
+
+\section{Architecture Synthesis II: Recurrent and Hybrid Models}
+LSTM/GRU and CNN-BiLSTM hybrids model temporal evolution of ictal rhythms \citep{ep221104628}. MP-SeizNet's multi-path CNN-BiLSTM and inter-patient domain-adversarial CNN-BiLSTM \citep{ep250515203} explicitly target generalisation, the latter reporting the most honest cross-patient numbers in the corpus. Recurrent models add temporal context at the cost of training stability and latency, motivating the state-space alternatives below.
+
+\section{Architecture Synthesis III: Transformers}
+Attention-based models surged 2023--2026: CNN-Transformer with belief matching across six centres \citep{ep220800025}, end-to-end conv-transformers \citep{ep230510502}, channel-wise autoencoder-transformers, and feature-fusion transformers for onset prediction \citep{ep260602166}. Transformers capture long-range channel and temporal dependencies but are data-hungry; their gains are largest where multi-site data mitigate over-fitting, foreshadowing the foundation-model trend.
+
+\section{Architecture Synthesis IV: Graph Neural Networks}
+The brain is natively a graph; GNN and graph-attention models exploit electrode topology \citep{ep220807448,ep250715118}, and stereo-EEG GNNs predict seizure-freedom for surgical planning \citep{ep250215198}. Factor-graph and mutual-information-aided CNNs add probabilistic structure. GNNs are the most clinically interpretable family (edges map to connectivity) and the fastest-growing for intracranial tasks.
+
+\section{Architecture Synthesis V: Foundation Models and State-Space}
+The frontier is device-agnostic foundation models---Large Brain Model and EEG-X \citep{ep251108861}---pre-trained across corpora and benchmarked by OmniEEG-Bench \citep{ep260600815}. In parallel, CNN-Mamba/SSM hybrids \citep{ep260113234} achieve real-time inference with linear-time sequence modelling. These promise robustness to device and noise but remain unproven at clinical sensitivity targets under subject-wise evaluation.
+
+\section{Architecture Synthesis VI: Classical and Interpretable Baselines}
+Random Forest \citep{ep210604510}, wavelet+NN, and entropy/nonlinear-feature pipelines persist precisely because they are transparent and competitive under honest evaluation. They serve as the leakage-free reference against which deep gains must be measured---and, as our companion study shows, a Random Forest's epoch-vs-LOSO gap is identical in shape to that of far larger models.
+
+\begin{table}[h]\centering\caption{Architecture families: count, strength, and weakness.}\label{tab:archsum}
+\footnotesize\begin{tabular}{lcll}\toprule
+Family & \# & Strength & Weakness\\\midrule
+CNN & 4 & local motifs, efficient & texture over-fit\\
+RNN/BiLSTM & 4 & temporal context & latency, stability\\
+Transformer & 6 & long-range deps & data-hungry\\
+Graph NN/GAT & 5 & connectivity, interpretable & graph construction\\
+Foundation & 3 & device-robust & unproven clinical sens\\
+SSM/Mamba & 1 & real-time, linear & nascent\\
+Classical & 4 & transparent baseline & hand features\\
+Other DL & 18 & varied & heterogeneous\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Task Synthesis}
+The corpus spans five tasks (Table~\ref{tab:task}). Detection dominates; prediction (pre-ictal forecasting) is rising; onset/seizure-freedom localisation serves surgery; type classification and interictal IED/HFO biomarkers diagnose between events. A single governed platform (Sec.~\ref{sec:fwd}) must host all five behind one auditable interface.
+\begin{table}[h]\centering\caption{Task formulations and representative works.}\label{tab:task}
+\footnotesize\begin{tabular}{lcl}\toprule
+Task & \# & Representative\\\midrule
+Detection (real-time) & many & \citep{ep241003385,ep260113234}\\
+Prediction (pre-ictal) & several & \citep{ep251024986,ep260602166}\\
+Onset / seizure-freedom & few & \citep{ep250215198}\\
+Type classification & few & \citep{ep221104628}\\
+Interictal IED/HFO & few & \citep{ep230108600,ep260522858}\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Dataset Landscape}
+Six public corpora recur (Table~\ref{tab:ds}). CHB-MIT (paediatric scalp) is the dominant benchmark, followed by TUH/TUSZ (large, heterogeneous) and Bonn (single-channel). Reliance on a few corpora, and the fact that only 24 of 50 works name their dataset in the abstract, are reproducibility concerns. Cross-dataset transfer is rarely reported.
+\begin{table}[h]\centering\caption{Public datasets across the corpus.}\label{tab:ds}
+\footnotesize\begin{tabular}{lcl}\toprule
+Dataset & \# papers & Modality\\\midrule
+CHB-MIT & 12 & scalp, paediatric, focal\\
+TUH / TUSZ & 9 & scalp, large heterogeneous\\
+Bonn & 4 & single-channel (A--E)\\
+Neonatal (Helsinki) & 4 & scalp, neonatal\\
+Siena & 1 & scalp, adult focal\\
+Unstated in abstract & 26 & reproducibility concern\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Evaluation Protocols: The Honesty Problem}
+The single most consequential methodological choice is the cross-validation unit. Under \emph{epoch-level} CV, 8\,s segments from one recording appear in both train and test folds, leaking subject identity; under \emph{Leave-One-Subject-Out (LOSO)}, the test subject is wholly unseen. Our companion empirical study holds features and classifier fixed and varies only this choice: epoch-level yields 96.99\% accuracy / 88.4\% sensitivity, while LOSO yields 90\% accuracy but only \textbf{35\% mean sensitivity} (per-subject 0--90\%). Table~\ref{tab:proto} contrasts the regimes. The lesson generalises across the corpus: any paper reporting only epoch-level accuracy is reporting an upper bound irrelevant to deployment.
+\begin{table}[h]\centering\caption{Epoch-level vs subject-wise evaluation (companion study, identical pipeline).}\label{tab:proto}
+\begin{tabular}{lccc}\toprule
+Protocol & Accuracy & AUC & Sensitivity\\\midrule
+Epoch-level 5-fold & 96.99\% & 0.996 & 88.4\%\\
+\textbf{LOSO (24 subj.)} & 90.0\% & 0.846 & \textbf{35.1\%}\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Metrics: Beyond Accuracy}
+Accuracy is uninformative under imbalance. The corpus reports, inconsistently, sensitivity, specificity, PPV/NPV, $F_1$, AUC, and (rarely) calibration. For clinical safety, \textbf{sensitivity and NPV} dominate: a missed seizure is the costly error. We recommend mandatory reporting of subject-wise sensitivity with per-subject spread, plus calibration (ECE/Brier) for any system driving an escalation policy.
+
+\section{Affordable and Consumer-Grade Acquisition}
+A distinct, fast-growing thread targets screening outside specialist centres using Emotiv-class headsets \citep{ep251101879,ep220706914}, low-density montages, and behind-the-ear electrodes \citep{ep260611970}. Accuracy lags research-grade acquisition, but the access argument is strong: a 70\%-sensitive home screen that triages to clinical EEG may outperform no screening at all in low-resource settings. This thread is under-evaluated and deserves dedicated subject-wise benchmarks.
+
+\section{Interpretability and Clinical Translation}
+Interpretable microstate frameworks \citep{ep250902568}, attention maps, and SHAP attributions appear sporadically, but most works report none. Clinical translation requires a clinician-readable rationale per prediction; we argue (Sec.~\ref{sec:fwd}) that retrieval-augmented, citation-grounded explanation is the appropriate mechanism, with uncited spans flagged as hallucination.
+
+\section{Responsible, Explainable, and Interpretable AI}
+We treat three properties as measurable axes, not slogans. \textbf{Responsible AI}: fairness across age/sex/site (disparate impact $\geq0.8$), robustness to noise and device, and privacy. \textbf{Explainable AI}: post-hoc attribution (SHAP, Integrated Gradients) plus retrieval-grounded rationale. \textbf{Interpretable AI}: intrinsically transparent models (surrogate trees, microstates). The corpus is near-silent on fairness; we recommend it become a reporting requirement.
+
+\section{Quantitative Synthesis}
+Figure-free but tabular: the architecture distribution (Table~\ref{tab:archsum}) shows transformer/foundation/graph rising in 2024--26 while classical baselines persist; the dataset distribution (Table~\ref{tab:ds}) shows CHB-MIT dominance; the evaluation distribution shows epoch-level reporting still predominant---the central problem this review names.
+
+\section{Forward Architecture: Governed, Agentic, Retrieval-Grounded Deployment}\label{sec:fwd}
+A leakage-free model is necessary but insufficient. We propose a five-layer governed stack: (L1) preprocessing; (L2) model; (L3) retrieval-augmented citation-grounded explanation; (L4) multi-agent governance (Author$\rightarrow$Reviewer$\rightarrow$Chair) with permission-scoped Model Context Protocol tools; (L5) AIOps---per-subject sensitivity, calibration, drift (PSI), immutable audit row, fairness gate, kill-switch. A ten-layer agentic execution path (Table~\ref{tab:stack}) carries a clinician goal through council triage, planning, a policy gate, tool execution, and an audited record side-effect. This is the layer at which the honest 35\% sensitivity becomes actionable: a confidence-tiered policy escalates exactly the patients the model generalises to least.
+\begin{table}[h]\centering\caption{Ten-layer agentic execution stack.}\label{tab:stack}
+\footnotesize\begin{tabular}{cll}\toprule
+L & Layer & Function\\\midrule
+1 & Clinician goal & NL intent\\
+2 & Council & Author/Reviewer/Chair triage\\
+3 & Planner & goal $\rightarrow$ task DAG\\
+4 & Decomposition & atomic, scope-tagged\\
+5 & Policy gate & allow/deny/require-human\\
+6 & Computer-using agent & interface execution\\
+7 & Semantic tools & feature/classify/retrieve/explain\\
+8 & Driver & MNE/scikit-learn\\
+9 & Runtime & compute\\
+10 & Clinical record & audited side-effect\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Research Gaps}
+We catalogue fifteen gaps (Table~\ref{tab:gaps}), clustered into evaluation (G1--G5), deployment (G6--G11), and integration (G12--G15). The deployment and integration families are precisely what this governed architecture targets; the evaluation family demands a community shift to subject-wise reporting.
+\begin{table}[h]\centering\caption{Fifteen research gaps.}\label{tab:gaps}
+\footnotesize\begin{tabular}{cll}\toprule
+G\# & Gap & Cluster\\\midrule
+G1 & Evaluation leakage (epoch vs LOSO) & evaluation\\
+G2 & Inter-patient generalisation & evaluation\\
+G3 & Dataset over-reliance / cross-site & evaluation\\
+G4 & Sensitivity--specificity asymmetry & evaluation\\
+G5 & Class imbalance & evaluation\\
+G6 & Real-time / on-device & deployment\\
+G7 & Consumer-grade accuracy & deployment\\
+G8 & Interpretability & deployment\\
+G9 & Responsible AI (fairness/robust) & deployment\\
+G10 & Deployment governance & deployment\\
+G11 & Regulatory compliance & deployment\\
+G12 & Foundation models at clinical targets & integration\\
+G13 & Multi-task integration & integration\\
+G14 & Reproducibility & integration\\
+G15 & Functional breadth (one platform) & integration\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Open Challenges and Research Agenda}
+We translate the gaps into falsifiable directions: (1) a leakage-free community benchmark with mandatory LOSO; (2) per-patient calibration / enrolment to lift sensitivity; (3) cross-dataset transfer protocols; (4) subject-wise consumer-grade benchmarks; (5) foundation-model evaluation at clinical sensitivity targets; (6) fairness and calibration as reporting requirements; (7) governed, auditable deployment with human-in-the-loop escalation. Each is concrete and measurable.
+
+\section{Per-Paper Comparison}
+Table~\ref{tab:perpaper} summarises 47 of the 50 epilepsy-EEG works by year and architecture.
+\begin{table*}[t]\centering\caption{Per-paper comparison (part 1/3).}\label{tab:perpaper}
+\footnotesize\begin{tabular}{clllll p{2.4cm}l}\toprule \# & Yr & Arch & Data & Task & Title & Ref\\\midrule
+1 & 2023 & DL & -- & Detect & Shorter duration of slow wave slee & \cite{ep231101280} \\
+2 & 2022 & Transformer & -- & Detect & Six-center Assessment of CNN-Trans & \cite{ep220800025} \\
+3 & 2022 & GNN & -- & Detect & CNN-Aided Factor Graphs with Estim & \cite{ep220305950} \\
+4 & 2021 & RF & -- & Predict & Random Forest classifier for EEG-b & \cite{ep210604510} \\
+5 & 2025 & DL & -- & Predict & Epileptic Seizure Detection and Pr & \cite{ep251024986} \\
+6 & 2024 & DL & -- & Onset & Long-Term EEG Partitioning for Sei & \cite{ep241215598} \\
+7 & 2025 & AutoEnc & -- & Detect & Towards Automated EEG-Based Epilep & \cite{ep250820535} \\
+8 & 2025 & RF & -- & Detect & Emotion classification using EEG h & \cite{ep251222333} \\
+9 & 2025 & DL & -- & Detect & DIY hybrid SSVEP-P300 LED stimuli  & \cite{ep250801510} \\
+10 & 2026 & Transformer & -- & Predict & EEG-FuseFormer: A Transformer-Driv & \cite{ep260602166} \\
+11 & 2021 & DL & -- & Detect & Deep Learning for EEG Seizure Dete & \cite{ep210600611} \\
+12 & 2021 & CNN & -- & Detect & Automated Detection of Abnormaliti & \cite{ep210510358} \\
+13 & 2023 & Transformer & -- & Detect & Unsupervised Multivariate Time-Ser & \cite{ep230103470} \\
+14 & 2023 & Transformer & -- & Detect & EENED: End-to-End Neural Epilepsy  & \cite{ep230510502} \\
+15 & 2025 & CNN & -- & Detect & Accuracy-Constrained CNN Pruning f & \cite{ep250905190} \\
+16 & 2025 & Foundation & -- & Detect & EEG-X: Device-Agnostic and Noise-R & \cite{ep251108861} \\
+\bottomrule\end{tabular}\end{table*}
+
+\begin{table*}[t]\centering\caption{Per-paper comparison (part 2/3).}
+\footnotesize\begin{tabular}{clllll p{2.4cm}l}\toprule \# & Yr & Arch & Data & Task & Title & Ref\\\midrule
+17 & 2024 & DL & -- & Detect & From Epilepsy Seizures Classificat & \cite{ep241003385} \\
+18 & 2025 & CNN & -- & Detect & PaperNet: Efficient Temporal Convo & \cite{ep251222172} \\
+19 & 2022 & DL & -- & Detect & Real-Time Seizure Detection using  & \cite{ep220108780} \\
+20 & 2024 & DL & -- & Detect & Understanding data analysis aspect & \cite{ep240309707} \\
+21 & 2024 & Foundation & -- & Detect & Large Brain Model for Learning Gen & \cite{ep240518765} \\
+22 & 2024 & DL & -- & Detect & ArEEG Words: Dataset for Envisione & \cite{ep241118888} \\
+23 & 2022 & LSTM & -- & Detect & MP-SeizNet: A Multi-Path CNN Bi-LS & \cite{ep221104628} \\
+24 & 2025 & Federated & -- & Predict & Federated Learning for Epileptic S & \cite{ep250808159} \\
+25 & 2025 & GNN & -- & Predict & Graph-Based Deep Learning on Stere & \cite{ep250215198} \\
+26 & 2023 & LSTM & -- & Predict & Epileptic seizure forecasting with & \cite{ep230909471} \\
+27 & 2023 & DL & -- & Detect & Enhancing Epileptic Seizure Detect & \cite{ep231018767} \\
+28 & 2022 & DL & -- & Detect & EPOC Emotiv EEG Basics & \cite{ep220609051} \\
+29 & 2022 & Wavelet & -- & Detect & Comparison of EEG based epilepsy d & \cite{ep220404488} \\
+30 & 2021 & DL & -- & Detect & Machine Learning Applications on N & \cite{ep210203336} \\
+31 & 2024 & CNN & -- & Detect & Scaling convolutional neural netwo & \cite{ep240509911} \\
+32 & 2026 & Transformer & -- & Detect & LookAroundNet: Extending Temporal  & \cite{ep260106016} \\
+\bottomrule\end{tabular}\end{table*}
+
+\begin{table*}[t]\centering\caption{Per-paper comparison (part 3/3).}
+\footnotesize\begin{tabular}{clllll p{2.4cm}l}\toprule \# & Yr & Arch & Data & Task & Title & Ref\\\midrule
+33 & 2026 & SSM & -- & Detect & ConvMambaNet: A Hybrid CNN-Mamba S & \cite{ep260113234} \\
+34 & 2025 & DL & -- & Detect & EEG-MSAF: An Interpretable Microst & \cite{ep250902568} \\
+35 & 2026 & Foundation & -- & Detect & OmniEEG-Bench: A Standardized Eval & \cite{ep260600815} \\
+36 & 2022 & GNN & -- & Detect & Self-Supervised Learning for Anoma & \cite{ep220807448} \\
+37 & 2023 & DL & -- & Predict & Supervised and Unsupervised Deep L & \cite{ep230414922} \\
+38 & 2022 & GNN & -- & Detect & MICAL: Mutual Information-Based CN & \cite{ep220602298} \\
+39 & 2021 & DL & -- & Detect & Open and free EEG datasets for epi & \cite{ep210801030} \\
+40 & 2024 & Entropy & -- & Detect & Diagnosing epilepsy using entropy  & \cite{ep240107258} \\
+41 & 2025 & DL & -- & Detect & A Real-Time BCI for Stroke Hand Re & \cite{ep251015890} \\
+42 & 2025 & DL & -- & Detect & Affordable EEG, Actionable Insight & \cite{ep251101879} \\
+43 & 2024 & Transformer & -- & Detect & CwA-T: A Channelwise AutoEncoder w & \cite{ep241214522} \\
+44 & 2025 & CNN-BiLSTM & -- & Detect & EEG-Based Inter-Patient Epileptic  & \cite{ep250515203} \\
+45 & 2025 & GAT & -- & Detect & Graph Attention Networks for Detec & \cite{ep250715118} \\
+46 & 2026 & DL & -- & Biomark & Classification of IED-free EEG Res & \cite{ep260522858} \\
+47 & 2026 & RNN & -- & Detect & Low-Density EEG for Seizure Detect & \cite{ep260611970} \\
+\bottomrule\end{tabular}\end{table*}
+
+\input{_narrative}
+\input{_sections}
+
+
+
+
+
+
+\section{Conclusion}
+The field's reported success is real under epoch-level evaluation and largely illusory for the patient-independent task that matters clinically. We have synthesised 50 works, named evaluation honesty as the central validity threat, quantified it, catalogued fifteen gaps, and specified a governed deployment architecture with Responsible/Explainable/Interpretable AI as first-class metrics. Progress now depends less on new architectures than on honest evaluation and deployable governance.
+
+\small\bibliographystyle{IEEEtran}\bibliography{references}
+\end{document}
