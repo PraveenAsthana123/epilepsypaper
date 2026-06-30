@@ -1,0 +1,1 @@
+{"event": "governance_check", "model_version": "rf20d-9456801ed1f4", "drift_alert": true, "sensitivity_alert": false, "human_override_enabled": true}

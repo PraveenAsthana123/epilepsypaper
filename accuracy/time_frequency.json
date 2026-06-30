@@ -1,0 +1,31 @@
+{
+  "step": 8,
+  "name": "time_frequency",
+  "dataset": "UCI-178raw",
+  "fs_hz": 173.61,
+  "segment_len": 178,
+  "examples": {
+    "seizure": {
+      "row": 1,
+      "relative_band_power": {
+        "delta": 0.1247,
+        "theta": 0.3303,
+        "alpha": 0.1209,
+        "beta": 0.0104,
+        "gamma": 0.0004
+      },
+      "dominant_band": "theta"
+    },
+    "nonseizure": {
+      "row": 0,
+      "relative_band_power": {
+        "delta": 0.0837,
+        "theta": 0.026,
+        "alpha": 0.1441,
+        "beta": 0.3243,
+        "gamma": 0.0048
+      },
+      "dominant_band": "beta"
+    }
+  }
+}

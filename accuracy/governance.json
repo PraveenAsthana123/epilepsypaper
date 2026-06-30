@@ -1,0 +1,54 @@
+{
+  "step": 23,
+  "name": "governance_monitoring",
+  "model_version": "rf20d-9456801ed1f4",
+  "pii_protection": "only de-identified public datasets (CHB-MIT/UCI); no PII committed",
+  "bias_monitoring": "per-subject sensitivity disclosed (extreme between-subject variance flagged)",
+  "data_drift": {
+    "computed": true,
+    "reference_subjects": [
+      "chb01",
+      "chb02",
+      "chb03",
+      "chb04",
+      "chb05",
+      "chb06",
+      "chb07",
+      "chb08",
+      "chb09",
+      "chb10",
+      "chb11",
+      "chb12"
+    ],
+    "current_subjects": [
+      "chb13",
+      "chb14",
+      "chb15",
+      "chb16",
+      "chb17",
+      "chb18",
+      "chb19",
+      "chb20",
+      "chb21",
+      "chb22",
+      "chb23",
+      "chb24"
+    ],
+    "psi_per_feature_max": 0.6587,
+    "psi_per_feature_mean": 0.2045,
+    "n_features_drifted_psi_gt_0_25": 5,
+    "drift_alert": true
+  },
+  "performance_monitoring": {
+    "computed": true,
+    "mean_per_subject_sensitivity": 0.3508,
+    "aggregate_accuracy": 0.8954,
+    "auc": 0.8464,
+    "sensitivity_alert": false
+  },
+  "human_override_enabled": true,
+  "thresholds": {
+    "sensitivity_alert_below": 0.3,
+    "psi_alert_above": 0.25
+  }
+}

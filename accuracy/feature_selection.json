@@ -1,0 +1,72 @@
+{
+  "step": 13,
+  "name": "feature_selection",
+  "dataset": "CHB-MIT (cached 20-D features, all subjects)",
+  "n_samples": 14220,
+  "validation": "Leave-One-Subject-Out (balanced RandomForest)",
+  "full_20D": {
+    "loso_sensitivity": 0.3525,
+    "loso_auc": 0.8444
+  },
+  "pca_components_for_95pct_variance": 8,
+  "methods": {
+    "LASSO_L1": {
+      "n_features": 17,
+      "features": [
+        "delta_mean",
+        "alpha_mean",
+        "beta_mean",
+        "gamma_mean",
+        "hjorth_activity_mean",
+        "hjorth_mobility_mean",
+        "hjorth_complexity_mean",
+        "line_length_mean",
+        "delta_std",
+        "theta_std",
+        "alpha_std",
+        "beta_std",
+        "gamma_std",
+        "hjorth_activity_std",
+        "hjorth_mobility_std",
+        "hjorth_complexity_std",
+        "line_length_std"
+      ],
+      "loso_sensitivity": 0.3556,
+      "loso_auc": 0.8441
+    },
+    "RFE_RF_k10": {
+      "n_features": 10,
+      "features": [
+        "alpha_mean",
+        "gamma_mean",
+        "hjorth_activity_mean",
+        "line_length_mean",
+        "rms_mean",
+        "theta_std",
+        "beta_std",
+        "hjorth_activity_std",
+        "hjorth_complexity_std",
+        "line_length_std"
+      ],
+      "loso_sensitivity": 0.3569,
+      "loso_auc": 0.8554
+    },
+    "SelectKBest_ANOVA_k10": {
+      "n_features": 10,
+      "features": [
+        "delta_mean",
+        "theta_mean",
+        "alpha_mean",
+        "hjorth_activity_mean",
+        "hjorth_complexity_mean",
+        "line_length_mean",
+        "rms_mean",
+        "theta_std",
+        "beta_std",
+        "hjorth_complexity_std"
+      ],
+      "loso_sensitivity": 0.3489,
+      "loso_auc": 0.8207
+    }
+  }
+}

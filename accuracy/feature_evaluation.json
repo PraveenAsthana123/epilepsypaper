@@ -1,0 +1,211 @@
+{
+  "step": 12,
+  "name": "feature_evaluation",
+  "dataset": "CHB-MIT (cached 20-D features, all subjects)",
+  "n_samples": 14220,
+  "n_features": 20,
+  "n_seizure": 1580,
+  "n_subjects": 24,
+  "criteria": [
+    "ANOVA F-test",
+    "mutual information",
+    "Pearson/point-biserial correlation"
+  ],
+  "n_significant_anova_p_lt_0_05": 13,
+  "top5_by_anova_F": [
+    "hjorth_activity_mean",
+    "rms_mean",
+    "line_length_mean",
+    "theta_std",
+    "theta_mean"
+  ],
+  "top5_by_mutual_info": [
+    "hjorth_activity_mean",
+    "rms_mean",
+    "line_length_mean",
+    "theta_std",
+    "beta_std"
+  ],
+  "features": [
+    {
+      "feature": "hjorth_activity_mean",
+      "anova_F": 1387.2203,
+      "anova_p": 8.394e-290,
+      "mutual_info": 0.05047,
+      "pearson_r": 0.2982,
+      "pearson_p": 8.394e-290,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "rms_mean",
+      "anova_F": 1384.3413,
+      "anova_p": 3.119e-289,
+      "mutual_info": 0.04918,
+      "pearson_r": 0.2979,
+      "pearson_p": 3.119e-289,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "line_length_mean",
+      "anova_F": 1334.9788,
+      "anova_p": 1.926e-279,
+      "mutual_info": 0.04577,
+      "pearson_r": 0.293,
+      "pearson_p": 1.926e-279,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "theta_std",
+      "anova_F": 432.8198,
+      "anova_p": 1.013e-94,
+      "mutual_info": 0.02235,
+      "pearson_r": 0.1719,
+      "pearson_p": 1.013e-94,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "theta_mean",
+      "anova_F": 347.5905,
+      "anova_p": 1.161e-76,
+      "mutual_info": 0.0117,
+      "pearson_r": 0.1545,
+      "pearson_p": 1.161e-76,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "hjorth_complexity_std",
+      "anova_F": 72.3958,
+      "anova_p": 1.935e-17,
+      "mutual_info": 0.00433,
+      "pearson_r": -0.0712,
+      "pearson_p": 1.935e-17,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "delta_mean",
+      "anova_F": 59.4387,
+      "anova_p": 1.345e-14,
+      "mutual_info": 0.01044,
+      "pearson_r": -0.0645,
+      "pearson_p": 1.345e-14,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "hjorth_complexity_mean",
+      "anova_F": 38.171,
+      "anova_p": 6.657e-10,
+      "mutual_info": 0.00464,
+      "pearson_r": -0.0517,
+      "pearson_p": 6.657e-10,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "beta_std",
+      "anova_F": 32.5467,
+      "anova_p": 1.187e-08,
+      "mutual_info": 0.01195,
+      "pearson_r": -0.0478,
+      "pearson_p": 1.187e-08,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "alpha_mean",
+      "anova_F": 19.423,
+      "anova_p": 1.055e-05,
+      "mutual_info": 0.00615,
+      "pearson_r": 0.0369,
+      "pearson_p": 1.055e-05,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "delta_std",
+      "anova_F": 8.6417,
+      "anova_p": 0.003291,
+      "mutual_info": 0.00788,
+      "pearson_r": 0.0246,
+      "pearson_p": 0.003291,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "gamma_std",
+      "anova_F": 6.4709,
+      "anova_p": 0.01098,
+      "mutual_info": 0.00959,
+      "pearson_r": -0.0213,
+      "pearson_p": 0.01098,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "gamma_mean",
+      "anova_F": 5.8821,
+      "anova_p": 0.01531,
+      "mutual_info": 0.00844,
+      "pearson_r": -0.0203,
+      "pearson_p": 0.01531,
+      "significant_p_lt_0_05": true
+    },
+    {
+      "feature": "hjorth_mobility_std",
+      "anova_F": 3.7316,
+      "anova_p": 0.05341,
+      "mutual_info": 0.01037,
+      "pearson_r": -0.0162,
+      "pearson_p": 0.05341,
+      "significant_p_lt_0_05": false
+    },
+    {
+      "feature": "beta_mean",
+      "anova_F": 3.1172,
+      "anova_p": 0.07749,
+      "mutual_info": 0.00115,
+      "pearson_r": -0.0148,
+      "pearson_p": 0.07749,
+      "significant_p_lt_0_05": false
+    },
+    {
+      "feature": "hjorth_mobility_mean",
+      "anova_F": 3.0053,
+      "anova_p": 0.08301,
+      "mutual_info": 0.0077,
+      "pearson_r": -0.0145,
+      "pearson_p": 0.08301,
+      "significant_p_lt_0_05": false
+    },
+    {
+      "feature": "line_length_std",
+      "anova_F": 1.6874,
+      "anova_p": 0.194,
+      "mutual_info": 0.01015,
+      "pearson_r": -0.0109,
+      "pearson_p": 0.194,
+      "significant_p_lt_0_05": false
+    },
+    {
+      "feature": "alpha_std",
+      "anova_F": 1.5207,
+      "anova_p": 0.2175,
+      "mutual_info": 0.00575,
+      "pearson_r": 0.0103,
+      "pearson_p": 0.2175,
+      "significant_p_lt_0_05": false
+    },
+    {
+      "feature": "hjorth_activity_std",
+      "anova_F": 0.6399,
+      "anova_p": 0.4238,
+      "mutual_info": 0.0055,
+      "pearson_r": 0.0067,
+      "pearson_p": 0.4238,
+      "significant_p_lt_0_05": false
+    },
+    {
+      "feature": "rms_std",
+      "anova_F": 0.3738,
+      "anova_p": 0.541,
+      "mutual_info": 0.00879,
+      "pearson_r": 0.0051,
+      "pearson_p": 0.541,
+      "significant_p_lt_0_05": false
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "query": "inter-patient subject-wise seizure detection",
+  "n_indexed": 50,
+  "retrieved": [
+    {
+      "rank": 1,
+      "score": 0.3789,
+      "key": "ep250515203",
+      "title": "{EEG-Based Inter-Patient Epileptic Seizure Detection Combining Domain Adversarial Training with CNN-BiLSTM Network",
+      "journal": "{arXiv preprint",
+      "year": "2025",
+      "text": "{EEG-Based Inter-Patient Epileptic Seizure Detection Combining Domain Adversarial Training with CNN-BiLSTM Network {arXiv preprint 2025"
+    },
+    {
+      "rank": 2,
+      "score": 0.2198,
+      "key": "ep220800025",
+      "title": "{Six-center Assessment of CNN-Transformer with Belief Matching Loss for Patient-independent Seizure Detection in EEG",
+      "journal": "{arXiv preprint",
+      "year": "2022",
+      "text": "{Six-center Assessment of CNN-Transformer with Belief Matching Loss for Patient-independent Seizure Detection in EEG {arXiv preprint 2022"
+    },
+    {
+      "rank": 3,
+      "score": 0.1983,
+      "key": "ep231018767",
+      "title": "{Enhancing Epileptic Seizure Detection with EEG Feature Embeddings",
+      "journal": "{arXiv preprint",
+      "year": "2023",
+      "text": "{Enhancing Epileptic Seizure Detection with EEG Feature Embeddings {arXiv preprint 2023"
+    },
+    {
+      "rank": 4,
+      "score": 0.1903,
+      "key": "ep250905190",
+      "title": "{Accuracy-Constrained CNN Pruning for Efficient and Reliable EEG-Based Seizure Detection",
+      "journal": "{arXiv preprint",
+      "year": "2025",
+      "text": "{Accuracy-Constrained CNN Pruning for Efficient and Reliable EEG-Based Seizure Detection {arXiv preprint 2025"
+    },
+    {
+      "rank": 5,
+      "score": 0.1894,
+      "key": "ep220305950",
+      "title": "{CNN-Aided Factor Graphs with Estimated Mutual Information Features for Seizure Detection",
+      "journal": "{arXiv preprint",
+      "year": "2022",
+      "text": "{CNN-Aided Factor Graphs with Estimated Mutual Information Features for Seizure Detection {arXiv preprint 2022"
+    }
+  ]
+}
