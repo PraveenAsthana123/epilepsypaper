@@ -1,0 +1,764 @@
+{
+  "name": "deep_hyperparameter_tuning",
+  "dataset": "CHB-MIT 20-D features",
+  "n_samples": 14220,
+  "search_space": {
+    "layers": [
+      "[64]",
+      "[128,64]",
+      "[256,128,64]"
+    ],
+    "activation": [
+      "ReLU",
+      "LeakyReLU",
+      "Tanh"
+    ],
+    "optimizer": [
+      "SGD",
+      "Adam"
+    ],
+    "lr": [
+      0.01,
+      0.001
+    ],
+    "loss": [
+      "weighted_bce",
+      "focal"
+    ]
+  },
+  "n_configs": 72,
+  "epochs": 30,
+  "runtime_sec": 666.0,
+  "best_config": {
+    "layers": "[256,128,64]",
+    "activation": "LeakyReLU",
+    "optimizer": "Adam",
+    "lr": 0.01,
+    "loss": "focal",
+    "auc": 0.9442,
+    "sensitivity": 0.8165,
+    "accuracy": 0.9117
+  },
+  "all_results": [
+    {
+      "layers": "[256,128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9442,
+      "sensitivity": 0.8165,
+      "accuracy": 0.9117
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.943,
+      "sensitivity": 0.8608,
+      "accuracy": 0.9005
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.9392,
+      "sensitivity": 0.8354,
+      "accuracy": 0.9051
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.9386,
+      "sensitivity": 0.8354,
+      "accuracy": 0.9107
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.9379,
+      "sensitivity": 0.8101,
+      "accuracy": 0.9093
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.9351,
+      "sensitivity": 0.807,
+      "accuracy": 0.9001
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9342,
+      "sensitivity": 0.8038,
+      "accuracy": 0.9114
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9341,
+      "sensitivity": 0.7785,
+      "accuracy": 0.9188
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9313,
+      "sensitivity": 0.8861,
+      "accuracy": 0.8267
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9307,
+      "sensitivity": 0.8228,
+      "accuracy": 0.9093
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.9307,
+      "sensitivity": 0.8386,
+      "accuracy": 0.866
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9303,
+      "sensitivity": 0.7722,
+      "accuracy": 0.9015
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.9302,
+      "sensitivity": 0.788,
+      "accuracy": 0.9008
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.9296,
+      "sensitivity": 0.8544,
+      "accuracy": 0.8713
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9296,
+      "sensitivity": 0.8196,
+      "accuracy": 0.866
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.9289,
+      "sensitivity": 0.8006,
+      "accuracy": 0.8973
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9288,
+      "sensitivity": 0.8133,
+      "accuracy": 0.9107
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9265,
+      "sensitivity": 0.8133,
+      "accuracy": 0.8776
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9259,
+      "sensitivity": 0.8228,
+      "accuracy": 0.8597
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9257,
+      "sensitivity": 0.8133,
+      "accuracy": 0.8805
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9256,
+      "sensitivity": 0.8639,
+      "accuracy": 0.8358
+    },
+    {
+      "layers": "[64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9241,
+      "sensitivity": 0.8165,
+      "accuracy": 0.8738
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9241,
+      "sensitivity": 0.8291,
+      "accuracy": 0.8611
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9224,
+      "sensitivity": 0.8449,
+      "accuracy": 0.8453
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9224,
+      "sensitivity": 0.807,
+      "accuracy": 0.8938
+    },
+    {
+      "layers": "[64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.922,
+      "sensitivity": 0.8038,
+      "accuracy": 0.847
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.9215,
+      "sensitivity": 0.7911,
+      "accuracy": 0.8836
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9207,
+      "sensitivity": 0.7532,
+      "accuracy": 0.91
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9196,
+      "sensitivity": 0.75,
+      "accuracy": 0.9149
+    },
+    {
+      "layers": "[64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9191,
+      "sensitivity": 0.769,
+      "accuracy": 0.9026
+    },
+    {
+      "layers": "[64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9183,
+      "sensitivity": 0.7627,
+      "accuracy": 0.8815
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.918,
+      "sensitivity": 0.8038,
+      "accuracy": 0.8741
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9173,
+      "sensitivity": 0.7943,
+      "accuracy": 0.8854
+    },
+    {
+      "layers": "[64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9163,
+      "sensitivity": 0.7911,
+      "accuracy": 0.8875
+    },
+    {
+      "layers": "[64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9162,
+      "sensitivity": 0.7848,
+      "accuracy": 0.8808
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9158,
+      "sensitivity": 0.7975,
+      "accuracy": 0.8611
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.9151,
+      "sensitivity": 0.7468,
+      "accuracy": 0.8847
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9141,
+      "sensitivity": 0.7911,
+      "accuracy": 0.8727
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.914,
+      "sensitivity": 0.8133,
+      "accuracy": 0.8601
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.914,
+      "sensitivity": 0.8228,
+      "accuracy": 0.8474
+    },
+    {
+      "layers": "[64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9127,
+      "sensitivity": 0.7975,
+      "accuracy": 0.8685
+    },
+    {
+      "layers": "[64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.9118,
+      "sensitivity": 0.8038,
+      "accuracy": 0.8544
+    },
+    {
+      "layers": "[64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9107,
+      "sensitivity": 0.8291,
+      "accuracy": 0.846
+    },
+    {
+      "layers": "[64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.9105,
+      "sensitivity": 0.8165,
+      "accuracy": 0.8576
+    },
+    {
+      "layers": "[64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9094,
+      "sensitivity": 0.8323,
+      "accuracy": 0.8333
+    },
+    {
+      "layers": "[64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.9082,
+      "sensitivity": 0.7722,
+      "accuracy": 0.8664
+    },
+    {
+      "layers": "[64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "weighted_bce",
+      "auc": 0.908,
+      "sensitivity": 0.807,
+      "accuracy": 0.8534
+    },
+    {
+      "layers": "[64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.9056,
+      "sensitivity": 0.769,
+      "accuracy": 0.859
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9051,
+      "sensitivity": 0.8165,
+      "accuracy": 0.8425
+    },
+    {
+      "layers": "[64]",
+      "activation": "ReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.9049,
+      "sensitivity": 0.8038,
+      "accuracy": 0.8442
+    },
+    {
+      "layers": "[64]",
+      "activation": "LeakyReLU",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.9039,
+      "sensitivity": 0.788,
+      "accuracy": 0.853
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.9036,
+      "sensitivity": 0.769,
+      "accuracy": 0.8541
+    },
+    {
+      "layers": "[64]",
+      "activation": "Tanh",
+      "optimizer": "Adam",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.902,
+      "sensitivity": 0.7627,
+      "accuracy": 0.8488
+    },
+    {
+      "layers": "[64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.01,
+      "loss": "focal",
+      "auc": 0.8956,
+      "sensitivity": 0.788,
+      "accuracy": 0.8485
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.8935,
+      "sensitivity": 0.7816,
+      "accuracy": 0.8347
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.8895,
+      "sensitivity": 0.769,
+      "accuracy": 0.8263
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.8852,
+      "sensitivity": 0.769,
+      "accuracy": 0.8252
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.8785,
+      "sensitivity": 0.7785,
+      "accuracy": 0.82
+    },
+    {
+      "layers": "[64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.8738,
+      "sensitivity": 0.7595,
+      "accuracy": 0.8172
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.8726,
+      "sensitivity": 0.7595,
+      "accuracy": 0.8087
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.8693,
+      "sensitivity": 0.7437,
+      "accuracy": 0.8182
+    },
+    {
+      "layers": "[64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.8667,
+      "sensitivity": 0.7532,
+      "accuracy": 0.8119
+    },
+    {
+      "layers": "[64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.8667,
+      "sensitivity": 0.7627,
+      "accuracy": 0.8052
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.8662,
+      "sensitivity": 0.7278,
+      "accuracy": 0.8193
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "ReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.8638,
+      "sensitivity": 0.7468,
+      "accuracy": 0.8207
+    },
+    {
+      "layers": "[64]",
+      "activation": "LeakyReLU",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.8594,
+      "sensitivity": 0.7468,
+      "accuracy": 0.8034
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.8578,
+      "sensitivity": 0.7785,
+      "accuracy": 0.8108
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.8499,
+      "sensitivity": 0.7595,
+      "accuracy": 0.8052
+    },
+    {
+      "layers": "[64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.8475,
+      "sensitivity": 0.7532,
+      "accuracy": 0.8056
+    },
+    {
+      "layers": "[128,64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.8457,
+      "sensitivity": 0.7627,
+      "accuracy": 0.802
+    },
+    {
+      "layers": "[64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "weighted_bce",
+      "auc": 0.8442,
+      "sensitivity": 0.7563,
+      "accuracy": 0.7985
+    },
+    {
+      "layers": "[256,128,64]",
+      "activation": "Tanh",
+      "optimizer": "SGD",
+      "lr": 0.001,
+      "loss": "focal",
+      "auc": 0.8429,
+      "sensitivity": 0.7627,
+      "accuracy": 0.7985
+    }
+  ]
+}

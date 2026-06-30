@@ -1,3 +1,9 @@
+*.aux
+*.bbl
+*.blg
+*.log
 .loop/
-__pycache__/
+*.out
 *.pyc
+__pycache__/
+*.toc

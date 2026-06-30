@@ -1,0 +1,282 @@
+{
+  "name": "exploratory_data_analysis",
+  "CHB-MIT-20D": {
+    "n_samples": 14220,
+    "n_features": 20,
+    "class_balance": {
+      "seizure": 1580,
+      "non_seizure": 12640,
+      "seizure_rate": 0.1111
+    },
+    "n_subjects": 24,
+    "per_subject": {
+      "chb01": {
+        "n": 54,
+        "seizure": 6
+      },
+      "chb02": {
+        "n": 99,
+        "seizure": 11
+      },
+      "chb03": {
+        "n": 504,
+        "seizure": 56
+      },
+      "chb04": {
+        "n": 468,
+        "seizure": 52
+      },
+      "chb05": {
+        "n": 675,
+        "seizure": 75
+      },
+      "chb06": {
+        "n": 261,
+        "seizure": 29
+      },
+      "chb07": {
+        "n": 378,
+        "seizure": 42
+      },
+      "chb08": {
+        "n": 1080,
+        "seizure": 120
+      },
+      "chb09": {
+        "n": 351,
+        "seizure": 39
+      },
+      "chb10": {
+        "n": 549,
+        "seizure": 61
+      },
+      "chb11": {
+        "n": 936,
+        "seizure": 104
+      },
+      "chb12": {
+        "n": 2016,
+        "seizure": 224
+      },
+      "chb13": {
+        "n": 711,
+        "seizure": 79
+      },
+      "chb14": {
+        "n": 270,
+        "seizure": 30
+      },
+      "chb15": {
+        "n": 2430,
+        "seizure": 270
+      },
+      "chb16": {
+        "n": 189,
+        "seizure": 21
+      },
+      "chb17": {
+        "n": 351,
+        "seizure": 39
+      },
+      "chb18": {
+        "n": 423,
+        "seizure": 47
+      },
+      "chb19": {
+        "n": 306,
+        "seizure": 34
+      },
+      "chb20": {
+        "n": 405,
+        "seizure": 45
+      },
+      "chb21": {
+        "n": 252,
+        "seizure": 28
+      },
+      "chb22": {
+        "n": 261,
+        "seizure": 29
+      },
+      "chb23": {
+        "n": 540,
+        "seizure": 60
+      },
+      "chb24": {
+        "n": 711,
+        "seizure": 79
+      }
+    },
+    "feature_stats": {
+      "delta_mean": {
+        "mean": 0.5918,
+        "std": 0.1541,
+        "skew": -0.626,
+        "kurtosis": 0.605
+      },
+      "theta_mean": {
+        "mean": 0.1702,
+        "std": 0.0771,
+        "skew": 1.302,
+        "kurtosis": 2.737
+      },
+      "alpha_mean": {
+        "mean": 0.0736,
+        "std": 0.0598,
+        "skew": 2.258,
+        "kurtosis": 6.732
+      },
+      "beta_mean": {
+        "mean": 0.0982,
+        "std": 0.0776,
+        "skew": 1.424,
+        "kurtosis": 2.617
+      },
+      "gamma_mean": {
+        "mean": 0.0452,
+        "std": 0.0571,
+        "skew": 3.114,
+        "kurtosis": 14.751
+      },
+      "hjorth_activity_mean": {
+        "mean": -20.4817,
+        "std": 1.335,
+        "skew": 0.48,
+        "kurtosis": 0.359
+      },
+      "hjorth_mobility_mean": {
+        "mean": 0.2307,
+        "std": 0.0959,
+        "skew": 1.356,
+        "kurtosis": 4.773
+      },
+      "hjorth_complexity_mean": {
+        "mean": 3.3397,
+        "std": 0.9894,
+        "skew": 0.706,
+        "kurtosis": 0.811
+      },
+      "line_length_mean": {
+        "mean": -4.5425,
+        "std": 0.6785,
+        "skew": 1.009,
+        "kurtosis": 1.887
+      },
+      "rms_mean": {
+        "mean": -10.2425,
+        "std": 0.6695,
+        "skew": 0.471,
+        "kurtosis": 0.351
+      },
+      "delta_std": {
+        "mean": 0.1238,
+        "std": 0.0561,
+        "skew": 0.368,
+        "kurtosis": -0.371
+      },
+      "theta_std": {
+        "mean": 0.0648,
+        "std": 0.0315,
+        "skew": 1.218,
+        "kurtosis": 2.11
+      },
+      "alpha_std": {
+        "mean": 0.0386,
+        "std": 0.0334,
+        "skew": 1.934,
+        "kurtosis": 4.495
+      },
+      "beta_std": {
+        "mean": 0.0576,
+        "std": 0.0412,
+        "skew": 0.592,
+        "kurtosis": -0.458
+      },
+      "gamma_std": {
+        "mean": 0.0389,
+        "std": 0.0415,
+        "skew": 1.323,
+        "kurtosis": 1.405
+      },
+      "hjorth_activity_std": {
+        "mean": 0.7257,
+        "std": 0.3037,
+        "skew": 0.904,
+        "kurtosis": 1.37
+      },
+      "hjorth_mobility_std": {
+        "mean": 0.0732,
+        "std": 0.0488,
+        "skew": 0.712,
+        "kurtosis": -0.265
+      },
+      "hjorth_complexity_std": {
+        "mean": 0.8835,
+        "std": 0.5051,
+        "skew": 1.07,
+        "kurtosis": 1.874
+      },
+      "line_length_std": {
+        "mean": 0.3761,
+        "std": 0.182,
+        "skew": 0.906,
+        "kurtosis": 0.517
+      },
+      "rms_std": {
+        "mean": 0.3641,
+        "std": 0.1521,
+        "skew": 0.902,
+        "kurtosis": 1.369
+      }
+    },
+    "top5_correlated_pairs": [
+      {
+        "f1": "hjorth_activity_mean",
+        "f2": "rms_mean",
+        "r": 1.0
+      },
+      {
+        "f1": "hjorth_activity_std",
+        "f2": "rms_std",
+        "r": 1.0
+      },
+      {
+        "f1": "gamma_std",
+        "f2": "hjorth_mobility_std",
+        "r": 0.916
+      },
+      {
+        "f1": "alpha_mean",
+        "f2": "alpha_std",
+        "r": 0.88
+      },
+      {
+        "f1": "gamma_mean",
+        "f2": "hjorth_mobility_mean",
+        "r": 0.88
+      }
+    ],
+    "missing_values": 0
+  },
+  "UCI-178raw": {
+    "n_samples": 11500,
+    "n_features": 178,
+    "binary_balance": {
+      "seizure": 2300,
+      "non_seizure": 9200,
+      "seizure_rate": 0.2
+    },
+    "multiclass_counts": {
+      "1": 2300,
+      "2": 2300,
+      "3": 2300,
+      "4": 2300,
+      "5": 2300
+    },
+    "amplitude_range": [
+      -1885.0,
+      2047.0
+    ],
+    "missing_values": 0
+  }
+}

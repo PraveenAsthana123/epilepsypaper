@@ -1,0 +1,50 @@
+{
+  "benchmark": "advanced_models",
+  "framework": "pytorch 2.11.0+cu130 (cpu)",
+  "dataset": "UCI-178raw (balanced subsample)",
+  "n_segments": 4600,
+  "validation": "epoch-level stratified 80/20 hold-out",
+  "epochs": 14,
+  "spectrogram_shape": [
+    17,
+    13
+  ],
+  "runtime_sec": 898.4,
+  "results": {
+    "CNN_computer_vision": {
+      "accuracy": 0.9489,
+      "sensitivity": 0.9304,
+      "specificity": 0.9674,
+      "f1": 0.948,
+      "auc": 0.9914
+    },
+    "TimeSeries_TCN": {
+      "accuracy": 0.9489,
+      "sensitivity": 0.9413,
+      "specificity": 0.9565,
+      "f1": 0.9485,
+      "auc": 0.9861
+    },
+    "RNN_LSTM": {
+      "accuracy": 0.95,
+      "sensitivity": 0.9435,
+      "specificity": 0.9565,
+      "f1": 0.9497,
+      "auc": 0.9792
+    },
+    "Transformer": {
+      "accuracy": 0.95,
+      "sensitivity": 0.9478,
+      "specificity": 0.9522,
+      "f1": 0.9499,
+      "auc": 0.9904
+    },
+    "RL_REINFORCE": {
+      "accuracy": 0.963,
+      "sensitivity": 0.9522,
+      "specificity": 0.9739,
+      "f1": 0.9626,
+      "auc": 0.9918
+    }
+  }
+}

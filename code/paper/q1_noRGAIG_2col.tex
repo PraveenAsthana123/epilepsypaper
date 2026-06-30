@@ -5,26 +5,27 @@
 \usepackage{pgfplots}\pgfplotsset{compat=1.17}\usepgfplotslibrary{polar}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage[hidelinks]{hyperref}
+\graphicspath{{../../images/}{../images/}{images/}}
 \renewcommand{\arraystretch}{1.18}
-\title{\textbf{The Epoch-Level Illusion: An Honest Subject-Wise Benchmark of EEG\\
-Epilepsy Seizure Detection}}
+\title{\textbf{Patient-Independent EEG Seizure Detection: A Validation-Aware\\
+Benchmark Across Epoch-Level and Subject-Level Evaluation}}
 \author{P.~Asthana,~\IEEEmembership{NeuroAI Research Group}}
 \date{\today}
 \begin{document}\maketitle
 
 \begin{abstract}
 \noindent\textbf{Background.} Automated EEG seizure detection is routinely reported above 95\% accuracy, but such figures are almost always obtained under \emph{epoch-level} cross-validation, which leaks subject-specific information across train/test folds and overstates deployable performance.
-\textbf{Methods.} Holding feature representation and classifier fixed, we vary \emph{only} the validation protocol. A 20-dimensional feature pipeline (per-channel $\delta\theta\alpha\beta\gamma$ relative band power, three Hjorth descriptors, line-length, RMS; mean+std across channels over 8\,s epochs) feeds a class-balanced Random Forest, evaluated under (i) 5-fold stratified CV on Bonn/UCI (11{,}500 segments) and (ii) strict Leave-One-Subject-Out (LOSO) on CHB-MIT (24 subjects). We add hyperparameter, statistical, sensitivity, ablation, and failure-mode analyses, and situate the detector in a five-layer governed deployment stack.
-\textbf{Results.} Epoch-level evaluation yields 96.99\% accuracy (AUC 0.996, sensitivity 88.4\%). The identical pipeline under LOSO yields 90.0\% accuracy and AUC 0.846, but mean sensitivity collapses to 35.1\% with a per-subject range of 0--89.7\%. Specificity (96.9\%) and NPV (92.3\%) remain high.
+\textbf{Methods.} Holding feature representation and classifier fixed, we change the validation protocol. The key control is \emph{within} CHB-MIT (identical 20-D features and balanced Random Forest, epoch-level 5-fold vs strict Leave-One-Subject-Out over 24 subjects), so the protocol effect is not confounded by dataset; a Bonn/UCI epoch-level point (11{,}500 segments) is reported separately as a protocol-plus-dataset reference. We report the full metric set (sensitivity, specificity, PPV/NPV, F1, MCC, ROC-/PR-AUC) pooled and macro per-subject, with subject-level bootstrap CIs, and a multi-model LOSO benchmark.
+\textbf{Results.} On the \emph{same} CHB-MIT data, switching epoch-level$\rightarrow$LOSO cuts macro sensitivity 48.6\%$\rightarrow$35.1\% (pooled 49.8\%$\rightarrow$27.5\%), nearly halves MCC (0.64$\rightarrow$0.35) and PR-AUC (0.79$\rightarrow$0.40), while specificity stays high (97\%). No model family exceeds $\sim$56\% LOSO sensitivity. The cross-dataset Bonn/UCI epoch-level point (88.4\% sensitivity) reflects additional dataset difficulty.
 \textbf{Conclusion.} The 53-point sensitivity gap is a measurement artefact of epoch-level validation, not a modelling deficiency. Subject-wise sensitivity, not epoch-level accuracy, is the only honest figure of merit. We release all code and per-subject results.
 \end{abstract}
 
-\noindent\textbf{Keywords:} EEG, epilepsy, seizure detection, Leave-One-Subject-Out, data leakage, responsible AI, retrieval-augmented generation, Model Context Protocol, AIOps, reproducibility.
+\noindent\textbf{Keywords:} EEG, epilepsy, seizure detection, Leave-One-Subject-Out, data leakage, subject-wise evaluation, class imbalance, Matthews correlation coefficient, reproducibility.
 
 \section{Introduction}
 Epilepsy affects $\sim$50 million people worldwide and continuous EEG remains the diagnostic gold standard \citep{ep241003385}. Recent deep-learning detectors report near-perfect accuracy \citep{ep250820535,ep210510358,ep251108861}, yet a recurring flaw undermines clinical interpretability: \emph{how the data are split}. When 8\,s epochs from one multi-hour recording are randomly assigned to train and test folds, a model memorises patient- and session-specific signatures (electrode impedance, baseline rhythms, artefact morphology) rather than generalisable seizure physiology; the reported accuracy then measures within-recording recall, irrelevant to the deployment question of whether the detector fires on an \emph{unseen} patient \citep{ep250515203,ep210203336}.
 
-\textbf{Contributions.} (1) We isolate leakage-induced inflation by holding features and classifier fixed and varying only the CV protocol; (2) we report a complete per-subject LOSO benchmark on CHB-MIT, exposing extreme between-subject variance; (3) we add hyperparameter, statistical (subject-level bootstrap), sensitivity, ablation, and failure-mode analyses; (4) we situate the detector in a five-layer governed-deployment stack with multi-agent governance, RAG explanation, MCP tooling, and AIOps monitoring; and (5) we release the full pipeline and per-subject results.
+\textbf{Contributions.} (1) We isolate leakage-induced inflation by holding features and classifier fixed and changing the validation protocol \emph{within a single dataset} (CHB-MIT epoch-5fold vs LOSO), removing the dataset confound; (2) we report a complete per-subject LOSO benchmark on CHB-MIT with pooled+macro metrics, MCC, PR-AUC and subject-level bootstrap CIs; (3) we benchmark statistical, ML, and a deep baseline under one common LOSO split, showing the gap is model-independent; (4) we add ablation, threshold/operating-point, and failure-mode analyses; and (5) we release the full reproducible pipeline and per-subject results.
 
 \section{Related Work and Field Synthesis}
 We synthesise 50 recent works (2021--2026). Convolutional, recurrent, transformer, graph and state-space models dominate \citep{ep241003385,ep230103470,ep251108861,ep260113234}, with autoencoders \citep{ep250820535}, stereo-EEG graph networks \citep{ep250215198}, and device-agnostic foundation models \citep{ep251108861} reporting strong epoch-level scores. A smaller body targets inter-patient generalisation via domain-adversarial training \citep{ep250515203} and reviews leakage in neuroimaging \citep{ep210203336}; consumer-grade acquisition relevant to scalable screening is emerging \citep{ep251101879,ep220706914}. Table~\ref{tab:arch} summarises the architecture distribution and Table~\ref{tab:dsuse} the dataset reliance.
@@ -244,74 +245,72 @@ Subjective & Clinical-plausibility, per-subject narrative & Sec.~15\\
 Visualisation & Radar (6-metric), per-subject bar & Fig.~\ref{fig:radar},\ref{fig:bar}\\\bottomrule
 \end{tabular}\end{table*}
 
+\section{Same-Dataset Leakage Control}\label{sec:samedataset}
+A reviewer may object that our headline contrast (Bonn/UCI epoch-level vs CHB-MIT LOSO) confounds the validation \emph{protocol} with the \emph{dataset}. To isolate the protocol effect we repeat the comparison \emph{within CHB-MIT alone}, holding the 20-D features and the balanced Random Forest fixed and changing only the protocol (epoch-level stratified 5-fold vs LOSO) on the identical 14{,}220 epochs. Table~\ref{tab:samed} reports the full metric set, pooled and macro per-subject. On the same data, switching to subject-wise evaluation cuts macro sensitivity from 48.6\% to 35.1\% (pooled 49.8\%$\rightarrow$27.5\%), nearly halves MCC ($0.64\rightarrow0.35$), and halves PR-AUC ($0.79\rightarrow0.40$)---a genuine protocol-induced inflation that \emph{cannot} be attributed to dataset, montage, or population. The larger gap against Bonn/UCI (epoch sensitivity 88.4\%) additionally reflects dataset difficulty and is therefore a \emph{protocol-plus-dataset} point.
+\begin{table}[h]\centering\caption{Same-dataset CHB-MIT: epoch-5fold vs LOSO, identical features+RF. 95\% CI is subject-level bootstrap (2000 resamples).}\label{tab:samed}
+\begin{tabular}{lcc}\toprule
+Metric & Epoch 5-fold & LOSO\\\midrule
+Accuracy (pooled) & 0.938 & 0.896\\
+Sensitivity (pooled) & 0.498 & 0.275\\
+Sensitivity (macro per-subj) & 0.486 & \textbf{0.351}\\
+\;\;95\% CI (macro sens) & [0.37, 0.59] & [0.24, 0.47]\\
+Specificity (pooled) & 0.993 & 0.974\\
+MCC & 0.644 & 0.346\\
+Balanced accuracy & 0.746 & 0.624\\
+PR-AUC & 0.788 & 0.398\\\bottomrule
+\end{tabular}\end{table}
+\textbf{Pooled vs macro.} We report \emph{both} the pooled-confusion sensitivity (27.5\%) and the macro per-subject mean (35.1\%, the headline); their gap reflects between-subject variance (Table~\ref{tab:full}). \textbf{Clinical operating points.} Under LOSO, sensitivity at fixed specificity is 46\% @ 90\%, 36\% @ 95\%, and 19\% @ 99\%.
+
 \section{Subjective and Qualitative Analysis}
-Beyond the quantitative battery, we assess the results qualitatively against clinical expectation. \textbf{Clinical plausibility.} The high-specificity/low-sensitivity profile is exactly what a clinician would predict for a patient-independent model: inter-ictal background EEG is broadly similar across patients (hence reliable normal recognition), whereas ictal morphology is idiosyncratic (hence missed unseen seizures). The model's errors are therefore \emph{interpretable}, not random. \textbf{Per-subject narrative.} Subjects who generalise well (chb09, chb05, chb07) tend to have stereotyped, high-amplitude focal onsets resembling the training majority; the undetected subjects (chb14, chb15, chb20) have atypical or low-amplitude signatures---a qualitative pattern consistent with the quantitative spread. \textbf{Expert-rubric perspective.} Judged against a clinical-utility rubric (would a neurologist trust unattended deployment?), the honest 35\% sensitivity correctly fails the bar for autonomous use but passes for a triage-with-escalation role---which is precisely the deployment posture the governed-deployment governance layer encodes.
+Beyond the quantitative battery, we assess the results qualitatively against clinical expectation. \textbf{Clinical plausibility.} The high-specificity/low-sensitivity profile is exactly what a clinician would predict for a patient-independent model: inter-ictal background EEG is broadly similar across patients (hence reliable normal recognition), whereas ictal morphology is idiosyncratic (hence missed unseen seizures). The model's errors are therefore \emph{interpretable}, not random. \textbf{Per-subject narrative.} Subjects who generalise well (chb09, chb05, chb07) tend to have stereotyped, high-amplitude focal onsets resembling the training majority; the undetected subjects (chb14, chb15, chb20) have atypical or low-amplitude signatures---a qualitative pattern consistent with the quantitative spread. \textbf{Expert-rubric perspective.} Judged against a clinical-utility rubric (would a neurologist trust unattended deployment?), the honest 35\% sensitivity correctly fails the bar for autonomous use but passes for a triage-with-escalation role, where uncertain cases are routed to a clinician.
 
-\section{Governed Deployment Considerations}\label{sec:rgaig}
-A leakage-free detector is necessary but insufficient for clinical use. We embed it in a five-layer stack: (L1) preprocessing; (L2) model; (L3) retrieval-augmented, citation-grounded explanation; (L4) multi-agent governance (Author$\rightarrow$Reviewer$\rightarrow$Chair) with permission-scoped MCP tools; (L5) AIOps --- per-subject sensitivity, calibration (ECE/Brier), drift (PSI), an immutable audit row per prediction, a fairness gate (disparate impact $\geq0.8$), and a kill-switch. A ten-layer agentic execution path carries a clinician goal through council triage, planning, task decomposition, a policy gate, tool execution, and an audited clinical-record side-effect. The honest 35\% sensitivity becomes \emph{actionable} here: a confidence-tiered policy auto-routes high-confidence cases, escalates mid-confidence to human review, and rejects low-confidence --- escalating exactly the patients the model generalises to least.
+\section{Multi-Model LOSO Benchmark}\label{sec:bench}
+To show the leakage gap is model-independent, we evaluate statistical, classical-ML, and a deep MLP baseline under the \emph{same} CHB-MIT LOSO split on the identical 20-D features (Table~\ref{tab:bench}). No family exceeds $\sim$56\% LOSO sensitivity; the high-specificity/low-sensitivity profile is universal. Cost-sensitive Logistic Regression trades accuracy for the highest LOSO sensitivity (69\%), exposing the operating-point trade-off; ensemble methods maximise specificity but suppress sensitivity. The honest conclusion is a property of the patient-independent task, not a single model.
+\begin{table}[h]\centering\caption{Multi-model CHB-MIT LOSO (identical features, one split). Accuracy / sensitivity.}\label{tab:bench}
+\begin{tabular}{llc}\toprule
+Family & Model & Acc / Sens (LOSO)\\\midrule
+Baseline & Majority class & 0.889 / 0.000\\
+Statistical & Logistic Regression & 0.786 / \textbf{0.694}\\
+Statistical & LDA & 0.881 / 0.327\\
+Statistical & Gaussian NB & 0.853 / 0.375\\
+ML & Random Forest & 0.896 / 0.272\\
+ML & SVM (RBF) & 0.789 / 0.563\\
+ML & HistGradientBoosting & 0.879 / 0.356\\
+ML & KNN & 0.848 / 0.315\\
+DL & MLP & 0.880 / 0.366\\\bottomrule
+\end{tabular}\end{table}
+Fig.~\ref{fig:persub} shows the per-subject LOSO sensitivity (sorted), making the 0--90\% spread explicit; Fig.~\ref{fig:cmc} the aggregate confusion matrix (TP435/FP343/FN1145/TN12297).
+\begin{figure}[h]\centering\includegraphics[width=\columnwidth]{per_subject_auc.png}
+\caption{Per-subject LOSO performance across the 24 CHB-MIT subjects.}\label{fig:persub}\end{figure}
+\begin{figure}[h]\centering\includegraphics[width=0.8\columnwidth]{confusion_chbmit.png}
+\caption{CHB-MIT LOSO aggregate confusion matrix (pooled over 24 subjects).}\label{fig:cmc}\end{figure}
 
-\subsection{Architecture, sequence, and network diagrams}
-Fig.~\ref{fig:flow} is the five-layer governed deployment stack; Fig.~\ref{fig:seq} the request sequence; Fig.~\ref{fig:net} the deployment network (C4 container view).
-\begin{figure}[h]\centering
-\resizebox{\columnwidth}{!}{%
-\begin{tikzpicture}[node distance=3.4mm,every node/.style={font=\scriptsize},
- box/.style={draw,rounded corners,minimum width=6.6cm,minimum height=5.5mm,align=center}]
-\node[box,fill=blue!8](l1){L1 Preprocessing: 0.5--40\,Hz filter, 8\,s epoching};
-\node[box,fill=blue!8,below=of l1](l2){L2 Model: 20-D features $\rightarrow$ RF / CNN-BiLSTM};
-\node[box,fill=green!12,below=of l2](l3){L3 RAG: citation-grounded explanation};
-\node[box,fill=orange!15,below=of l3](l4){L4 Agentic governance: Author$\to$Reviewer$\to$Chair, MCP};
-\node[box,fill=red!10,below=of l4](l5){L5 AIOps: drift, calibration, audit, fairness, kill-switch};
-\draw[-{Stealth}](l1)--(l2);\draw[-{Stealth}](l2)--(l3);\draw[-{Stealth}](l3)--(l4);\draw[-{Stealth}](l4)--(l5);
-\end{tikzpicture}
-}
-\caption{Five-layer governed deployment stack.}\label{fig:flow}\end{figure}
-\begin{figure}[h]\centering
-\resizebox{\columnwidth}{!}{%
-\begin{tikzpicture}[font=\scriptsize,>=Stealth,node distance=12mm]
-\foreach \x/\n in {0/Clinician,1.9/Council,3.8/Planner,5.7/Policy,7.6/Tools,9.5/Record}
- {\node(\n) at (\x,0){\n};\draw[thick](\n.south)--++(0,-3.0);}
-\draw[->](Clinician.south)++(0,-0.3)--node[above]{goal}++(1.9,0);
-\draw[->](Council.south)++(0,-0.7)--node[above]{plan}++(1.9,0);
-\draw[->](Planner.south)++(0,-1.1)--node[above]{tasks}++(1.9,0);
-\draw[->](Policy.south)++(0,-1.5)--node[above]{allow}++(1.9,0);
-\draw[->](Tools.south)++(0,-1.9)--node[above]{result}++(1.9,0);
-\draw[<-](Clinician.south)++(0,-2.5)--node[below]{audited decision}++(9.5,0);
-\end{tikzpicture}
-}
-\caption{Request sequence: clinician goal $\to$ council $\to$ planner $\to$ policy gate $\to$ tools $\to$ audited clinical record.}\label{fig:seq}\end{figure}
-\begin{figure}[h]\centering
-\resizebox{\columnwidth}{!}{%
-\begin{tikzpicture}[font=\scriptsize,node distance=7mm and 9mm,
- c/.style={draw,rounded corners,fill=gray!8,minimum height=6mm,align=center}]
-\node[c](ui){Clinician UI};
-\node[c,right=of ui](api){API Gateway};
-\node[c,below=of api](orch){Agent Orchestrator};
-\node[c,left=of orch](infer){Inference svc\\(RF/CNN)};
-\node[c,below=of orch](rag){RAG svc + Vector DB};
-\node[c,right=of orch](aiops){AIOps + Audit DB};
-\draw[-{Stealth}](ui)--(api);\draw[-{Stealth}](api)--(orch);
-\draw[-{Stealth}](orch)--(infer);\draw[-{Stealth}](orch)--(rag);\draw[-{Stealth}](orch)--(aiops);
-\end{tikzpicture}
-}
-\caption{Deployment network (C4 container view).}\label{fig:net}\end{figure}
+\section{Scope and Novelty}
+\textbf{Current scope.} Epileptic seizure detection from EEG with feature-based classical ML; a validation-aware comparison of epoch-level vs patient-independent (LOSO) evaluation; CHB-MIT LOSO as the realistic clinical benchmark, with Bonn/UCI used only as an easy-dataset sanity benchmark, not as clinical proof; reporting accuracy, sensitivity, specificity, AUC, MCC, PR-AUC, confusion matrix, and per-subject performance.
+\textbf{Novelty.} The contribution is \emph{not} high accuracy. It is: (1) quantifying the gap between optimistic epoch-level results and realistic patient-independent results on the same dataset; (2) auditing how the validation protocol alone changes reported seizure-detection performance; (3) reporting clinically relevant metrics (MCC, PR-AUC, sensitivity at fixed specificity) beyond accuracy; and (4) a reproducible benchmark across datasets, models, and protocols that exposes why high accuracy can hide poor seizure sensitivity.
+\textbf{Future scope.} Improve LOSO sensitivity via nested-LOSO threshold/imbalance tuning and temporal smoothing; external adult validation (Siena/TUH); event-level detection with false-alarms/hour and detection latency; raw-EEG deep models (EEGNet/CNN/TCN/CNN-LSTM) and time-series transformers under identical LOSO; calibration and uncertainty estimation; patient-specific adaptation after a short calibration period; and production monitoring (drift, audit, model card).
 
-\section{Research Gaps, Current and Future Scope}
-This study addresses gaps G1 (evaluation leakage), G2 (inter-patient generalisation, benchmarked), G4 (sensitivity--specificity asymmetry), G8 (interpretability, RAG), G9 (responsible AI, fairness gate), G10 (deployment governance), G11 (regulatory), G13 (multi-task integration, MCP), and G14 (reproducibility). \textbf{Current scope:} two public corpora; one transparent classifier; governance specified and instrumented. \textbf{Future scope:} (i) deep CNN/EEGNet under identical LOSO; (ii) a third corpus (Siena/TUH) for cross-dataset stability (G3); (iii) per-patient calibration to lift sensitivity (G2); (iv) consumer-grade (Emotiv) validation (G7); (v) a foundation-model backbone behind MCP (G12); (vi) a clinical pilot exercising the full HITL/audit path.
-
-\section{Reproducibility and Q1-Readiness}
+\section{Reproducibility}
+All code, per-subject results, and protocol-comparison artefacts are released at
+\texttt{github.com/PraveenAsthana123/epilepsypaper}. Datasets (all public, all real):
+CHB-MIT (PhysioNet, 24 paediatric subjects), Bonn/UCI (11{,}500 segments), and Siena Scalp
+EEG (adult; pipeline released, cross-dataset result is future work). Every number traces to a
+committed script and result JSON; seed fixed at 42.
 \begin{table*}[t]\centering\caption{Reproducibility checklist.}\label{tab:repro}
 \begin{tabular}{lc}\toprule
 Item & Status\\\midrule
-Code released & yes\\
-Per-subject results released & yes (Table~\ref{tab:full})\\
-Fixed seed (42) & yes\\
-Public datasets only & yes\\
-Leakage-free protocol & yes (LOSO)\\
-Subject-level statistics & yes (bootstrap)\\\bottomrule
+Code + per-subject results released & yes (public repo)\\
+Same-dataset leakage control (CHB-MIT epoch vs LOSO) & yes (Table~\ref{tab:samed})\\
+Pooled + macro metrics, MCC, PR-AUC & yes\\
+Multi-model LOSO benchmark & yes (Table~\ref{tab:bench})\\
+Subject-level bootstrap CIs; seed 42; public data & yes\\\bottomrule
 \end{tabular}\end{table*}
 
+\section{Limitations}
+(1) CHB-MIT is \emph{paediatric}; adult generalisation (Siena/TUH) is future work. (2) The Bonn/UCI-vs-CHB-MIT contrast mixes protocol with dataset; we therefore foreground the same-dataset CHB-MIT control (Sec.~\ref{sec:samedataset}). (3) Deployable LOSO sensitivity (35\%) is low; we report it honestly rather than tuning on test folds. (4) No prospective clinical trial; all data are retrospective and public. (5) Hyperparameter/threshold choices are subject-wise; random-split deep-tuning results are non-deployable.
+
 \section{Declarations}
-\textbf{Originality.} The work is original and not under concurrent review. \textbf{Conflict of interest.} None declared. \textbf{Ethics.} Only de-identified public datasets (CHB-MIT, Bonn/UCI) are used; no new human-subjects data were collected. \textbf{Data availability.} CHB-MIT (PhysioNet) and Bonn/UCI are publicly available. \textbf{Code availability.} The full pipeline and per-subject results are released. \textbf{Funding.} None.
+\textbf{Originality.} The work is original and not under concurrent review. \textbf{Conflict of interest.} None declared. \textbf{Ethics.} Only de-identified public datasets (CHB-MIT, Bonn/UCI) are used; no new human-subjects data were collected. \textbf{Data availability.} CHB-MIT (PhysioNet) and Bonn/UCI are publicly available. \textbf{Code availability.} The full pipeline, per-subject results, and protocol-comparison artefacts are released at \texttt{https://github.com/PraveenAsthana123/epilepsypaper}. \textbf{Funding.} None.
 
 
 

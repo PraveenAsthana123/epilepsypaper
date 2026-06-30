@@ -1,0 +1,181 @@
+{
+  "name": "chbmit_protocol_comparison",
+  "dataset": "CHB-MIT (identical 20-D features + balanced RF)",
+  "n_epochs": 14220,
+  "n_seizure": 1580,
+  "n_subjects": 24,
+  "epoch_5fold": {
+    "pooled": {
+      "accuracy": 0.9383,
+      "sensitivity": 0.4981,
+      "specificity": 0.9933,
+      "ppv": 0.9025,
+      "npv": 0.9406,
+      "f1": 0.6419,
+      "mcc": 0.6437,
+      "balanced_acc": 0.7457,
+      "roc_auc": 0.9385,
+      "pr_auc": 0.7876,
+      "confusion": {
+        "TN": 12555,
+        "FP": 85,
+        "FN": 793,
+        "TP": 787
+      }
+    },
+    "macro_per_subject": {
+      "macro_sensitivity": 0.4856,
+      "macro_auc": 0.9322,
+      "sens_ci95": [
+        0.3734,
+        0.5884
+      ],
+      "worst_subjects": [
+        "chb14",
+        "chb16",
+        "chb20",
+        "chb17"
+      ]
+    }
+  },
+  "LOSO": {
+    "pooled": {
+      "accuracy": 0.8959,
+      "sensitivity": 0.2753,
+      "specificity": 0.9735,
+      "ppv": 0.5649,
+      "npv": 0.9149,
+      "f1": 0.3702,
+      "mcc": 0.3455,
+      "balanced_acc": 0.6244,
+      "roc_auc": 0.7784,
+      "pr_auc": 0.3983,
+      "confusion": {
+        "TN": 12305,
+        "FP": 335,
+        "FN": 1145,
+        "TP": 435
+      }
+    },
+    "macro_per_subject": {
+      "macro_sensitivity": 0.3508,
+      "macro_auc": 0.8463,
+      "sens_ci95": [
+        0.2378,
+        0.4671
+      ],
+      "worst_subjects": [
+        "chb14",
+        "chb15",
+        "chb20",
+        "chb16"
+      ]
+    },
+    "threshold_sweep": [
+      {
+        "threshold": 0.1,
+        "sensitivity": 0.7285,
+        "specificity": 0.6737,
+        "ppv": 0.2182,
+        "npv": 0.952,
+        "f1": 0.3358,
+        "mcc": 0.2616
+      },
+      {
+        "threshold": 0.2,
+        "sensitivity": 0.5373,
+        "specificity": 0.8434,
+        "ppv": 0.3002,
+        "npv": 0.9358,
+        "f1": 0.3852,
+        "mcc": 0.2998
+      },
+      {
+        "threshold": 0.3,
+        "sensitivity": 0.4266,
+        "specificity": 0.9224,
+        "ppv": 0.4073,
+        "npv": 0.9279,
+        "f1": 0.4167,
+        "mcc": 0.342
+      },
+      {
+        "threshold": 0.4,
+        "sensitivity": 0.3437,
+        "specificity": 0.9544,
+        "ppv": 0.4848,
+        "npv": 0.9208,
+        "f1": 0.4022,
+        "mcc": 0.3477
+      },
+      {
+        "threshold": 0.5,
+        "sensitivity": 0.2753,
+        "specificity": 0.9735,
+        "ppv": 0.5649,
+        "npv": 0.9149,
+        "f1": 0.3702,
+        "mcc": 0.3455
+      },
+      {
+        "threshold": 0.6,
+        "sensitivity": 0.2266,
+        "specificity": 0.9836,
+        "ppv": 0.6336,
+        "npv": 0.9105,
+        "f1": 0.3338,
+        "mcc": 0.3382
+      },
+      {
+        "threshold": 0.7,
+        "sensitivity": 0.1861,
+        "specificity": 0.9901,
+        "ppv": 0.7017,
+        "npv": 0.9068,
+        "f1": 0.2941,
+        "mcc": 0.3274
+      },
+      {
+        "threshold": 0.8,
+        "sensitivity": 0.1297,
+        "specificity": 0.9941,
+        "ppv": 0.7348,
+        "npv": 0.9014,
+        "f1": 0.2205,
+        "mcc": 0.2807
+      },
+      {
+        "threshold": 0.9,
+        "sensitivity": 0.0595,
+        "specificity": 0.9977,
+        "ppv": 0.7642,
+        "npv": 0.8946,
+        "f1": 0.1104,
+        "mcc": 0.1941
+      }
+    ],
+    "sensitivity_at_fixed_specificity": {
+      "spec_90": 0.4595,
+      "spec_95": 0.3563,
+      "spec_99": 0.1861
+    }
+  },
+  "leakage_delta_same_dataset": {
+    "sensitivity_pooled": [
+      0.4981,
+      0.2753
+    ],
+    "sensitivity_macro": [
+      0.4856,
+      0.3508
+    ],
+    "mcc": [
+      0.6437,
+      0.3455
+    ],
+    "pr_auc": [
+      0.7876,
+      0.3983
+    ]
+  }
+}

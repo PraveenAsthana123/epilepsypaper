@@ -1,0 +1,81 @@
+{
+  "name": "onehot_multiclass",
+  "dataset": "UCI-178raw (5-class)",
+  "n_samples": 11500,
+  "n_classes": 5,
+  "class_names": {
+    "1": "seizure",
+    "2": "tumour_area",
+    "3": "healthy_area",
+    "4": "eyes_closed",
+    "5": "eyes_open"
+  },
+  "one_hot_encoding": {
+    "categories": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "onehot_shape": [
+      11500,
+      5
+    ],
+    "example_label": 4,
+    "example_onehot": [
+      0,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  "validation": "stratified 5-fold, multiclass RandomForest",
+  "overall_accuracy": 0.7156,
+  "per_class_recall": {
+    "seizure": 0.9622,
+    "tumour_area": 0.5322,
+    "healthy_area": 0.6122,
+    "eyes_closed": 0.7674,
+    "eyes_open": 0.7039
+  },
+  "seizure_vs_rest_accuracy": 0.9768,
+  "confusion_matrix": [
+    [
+      2213,
+      23,
+      18,
+      46,
+      0
+    ],
+    [
+      125,
+      1224,
+      624,
+      92,
+      235
+    ],
+    [
+      47,
+      461,
+      1408,
+      108,
+      276
+    ],
+    [
+      8,
+      12,
+      40,
+      1765,
+      475
+    ],
+    [
+      0,
+      91,
+      223,
+      367,
+      1619
+    ]
+  ]
+}

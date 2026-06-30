@@ -1,0 +1,187 @@
+\section{Research Questions}
+This review is driven by ten questions (Table~\ref{tab:rq}) spanning the field's state, methods, evaluation, explainability, governance, and open problems.
+\begin{table}[t]\centering\caption{Review questions.}\label{tab:rq}
+\footnotesize\begin{tabular}{cl}\toprule
+ID & Question\\\midrule
+RQ1 & What is the current state of EEG epilepsy AI?\\
+RQ2 & Which datasets are commonly used?\\
+RQ3 & Which AI architectures perform best, and under what evaluation?\\
+RQ4 & Which preprocessing and feature pipelines dominate?\\
+RQ5 & Which evaluation metrics are reported?\\
+RQ6 & Which explainability methods are adopted?\\
+RQ7 & Which responsible-AI / governance methods exist?\\
+RQ8 & What limitations recur?\\
+RQ9 & What research gaps remain?\\
+RQ10 & Which future directions are most promising?\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Search Strategy and Selection Policy}
+The protocol (Table~\ref{tab:search}) is documented for reproducibility. Boolean queries combined population, task, and method terms; screening proceeded title $\rightarrow$ abstract $\rightarrow$ full text.
+\begin{table}[t]\centering\caption{Search strategy and inclusion/exclusion policy.}\label{tab:search}
+\footnotesize\begin{tabular}{ll}\toprule
+Item & Detail\\\midrule
+Databases & arXiv, IEEE Xplore, PubMed, Scopus, Web of Science, SpringerLink, ScienceDirect\\
+Keywords & EEG, epilepsy, seizure $\times$ detection, prediction, deep learning,\\
+ & transformer, graph, foundation model, Emotiv, consumer\\
+Boolean & (EEG AND (epilepsy OR seizure)) AND (deep learning OR transformer OR \ldots)\\
+Years & 2021--2026\\
+Language & English\\
+Document type & peer-reviewed + pre-print with quantitative evaluation\\
+Inclusion & EEG epilepsy task, learning component, reported metric\\
+Exclusion & non-EEG only, no evaluation, duplicate pre-print/published pair\\
+Screening & title $\rightarrow$ abstract $\rightarrow$ full text\\
+Final count & 50\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Quality Assessment and Risk of Bias}
+We appraised each work on five quality dimensions (Table~\ref{tab:qa}). The most prevalent risk of bias is \emph{evaluation bias}: epoch-level cross-validation, which inflates reported performance. Reproducibility bias (no released code, undisclosed dataset) and spectrum bias (single-cohort, often paediatric, benchmarks) are also common.
+\begin{table}[t]\centering\caption{Quality-assessment dimensions and prevalence of risk.}\label{tab:qa}
+\footnotesize\begin{tabular}{lll}\toprule
+Dimension & Risk if absent & Prevalence\\\midrule
+Subject-wise evaluation & evaluation bias (inflation) & high\\
+Released code/data & reproducibility bias & high\\
+Cross-dataset test & external-validity bias & high\\
+Multi-cohort (age/site) & spectrum bias & moderate\\
+Clinical/expert validation & translation bias & high\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Literature Classification}
+We classify the corpus into thirteen method categories (Table~\ref{tab:class}), spanning classical ML to emerging agentic and retrieval-augmented systems---the last two being essentially absent from the clinical EEG literature and thus a clear opportunity.
+\begin{table}[t]\centering\caption{Method-category classification of the corpus.}\label{tab:class}
+\footnotesize\begin{tabular}{ll}\toprule
+Category & Presence in corpus\\\midrule
+Classical ML (RF/SVM/wavelet/entropy) & moderate\\
+Convolutional deep learning & high\\
+Recurrent / CNN-BiLSTM & moderate\\
+Transformer models & high (rising)\\
+Graph neural networks & moderate (rising)\\
+Foundation models & low (emerging)\\
+State-space (Mamba) & very low (newest)\\
+Federated learning & very low\\
+Self-supervised / transfer & low\\
+Explainable AI & low\\
+Responsible AI / governance & very low\\
+RAG / retrieval-grounded & absent\\
+Agentic AI & absent\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Dataset Comparison in Depth}
+Table~\ref{tab:dscmp} compares the principal corpora on the dimensions reviewers expect: availability, scale, demographics, modality, and annotation quality.
+\begin{table*}[t]\centering\caption{Detailed dataset comparison.}\label{tab:dscmp}
+\footnotesize\begin{tabular}{lllllll}\toprule
+Dataset & Avail. & Subjects & Population & Rate (Hz) & Annotation & Imbalance\\\midrule
+CHB-MIT & public & 24 & paediatric & 256 & onset/offset expert & severe\\
+TUH/TUSZ & public & 1000s & mixed adult & 250--500 & event-level expert & severe\\
+Bonn/UCI & public & pooled & mixed & 173.6 & set-level (A--E) & moderate\\
+Siena & public & 14 & adult focal & 512 & onset/offset & severe\\
+Neonatal (Helsinki) & public & 79 & neonatal & 256 & multi-annotator & severe\\\bottomrule
+\end{tabular}\end{table*}
+
+\section{AI Model Comparison in Depth}
+Table~\ref{tab:modelcmp} contrasts the architecture families on the dimensions that govern clinical adoption: accuracy ceiling, explainability, computational cost, and applicability.
+\begin{table*}[t]\centering\caption{AI model comparison across clinical-adoption dimensions.}\label{tab:modelcmp}
+\footnotesize\begin{tabular}{lllll}\toprule
+Model & Strength & Weakness & Compute & Explainability\\\midrule
+CNN / EEGNet & local motifs, efficient & texture over-fit & low--med & moderate (Grad-CAM)\\
+ResNet/Dense/Efficient & depth, transfer & data-hungry & medium & low\\
+LSTM / GRU & temporal context & latency, instability & medium & low\\
+Transformer / ViT & long-range deps & data-hungry & high & attention (not causal)\\
+Graph NN & connectivity, interpretable & graph construction & medium & high\\
+Foundation model & device-robust & unproven clinical sens & very high & low\\
+SSM / Mamba & real-time, linear & nascent & medium & low\\
+RF / XGBoost / SVM & transparent baseline & hand features & low & high (SHAP)\\\bottomrule
+\end{tabular}\end{table*}
+
+\section{Feature Engineering Comparison}
+Table~\ref{tab:featcmp} compares feature families. Hand-crafted spectral/temporal features remain competitive and interpretable; learned deep features achieve higher ceilings but lower transparency and higher leakage risk under whole-recording normalisation.
+\begin{table}[t]\centering\caption{Feature-engineering comparison.}\label{tab:featcmp}
+\footnotesize\begin{tabular}{lll}\toprule
+Feature type & Strength & Limitation\\\midrule
+Time-domain (line-length, RMS) & cheap, interpretable & limited expressivity\\
+Frequency (band power, PSD) & physiologically grounded & loses temporal info\\
+Time-frequency (STFT, wavelet) & captures non-stationarity & parameter-sensitive\\
+Entropy / nonlinear & complexity at onset & noise-sensitive\\
+Hjorth parameters & compact, interpretable & coarse\\
+Connectivity & network view & computationally heavy\\
+Learned deep features & highest ceiling & opaque, leakage risk\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Statistical Methods Used Across the Corpus}
+Reviewers expect an audit of which statistical methods the corpus actually employs (Table~\ref{tab:statcmp}). The corpus is strong on descriptive and discrimination metrics but weak on inferential testing, confidence intervals, and---critically---subject-level (rather than epoch-level) statistics.
+\begin{table}[t]\centering\caption{Statistical methods reported across the corpus.}\label{tab:statcmp}
+\footnotesize\begin{tabular}{ll}\toprule
+Method & Prevalence\\\midrule
+Descriptive (mean/SD) & high\\
+Confidence intervals & low\\
+$t$-test / ANOVA & low\\
+Wilcoxon / Mann--Whitney & low\\
+Pearson/Spearman correlation & low\\
+Subject-level bootstrap & very low\\
+Clinical (sens/spec/PPV/NPV) & moderate\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Performance Metrics Reported}
+Table~\ref{tab:metcmp} audits metric reporting. Accuracy and AUC dominate; sensitivity-at-fixed-specificity, calibration, and MCC---the metrics most relevant under imbalance and for clinical safety---are under-reported.
+\begin{table}[t]\centering\caption{Performance-metric reporting frequency.}\label{tab:metcmp}
+\footnotesize\begin{tabular}{ll}\toprule
+Metric & Reporting frequency\\\midrule
+Accuracy & very high\\
+Sensitivity / Recall & high\\
+Specificity & high\\
+AUC-ROC & high\\
+$F_1$ & moderate\\
+PPV / NPV & moderate\\
+PR-AUC & low\\
+MCC / Cohen's $\kappa$ & low\\
+Calibration (ECE/Brier) & very low\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Clinical Validation Comparison}
+Table~\ref{tab:clin} audits clinical validation. The overwhelming majority of works stop at retrospective public-dataset evaluation; neurologist review, inter-rater agreement, external multi-centre validation, and real-world deployment are rare---the clearest evidence that the field is pre-clinical.
+\begin{table}[t]\centering\caption{Clinical-validation practices.}\label{tab:clin}
+\footnotesize\begin{tabular}{ll}\toprule
+Validation practice & Prevalence\\\midrule
+Retrospective public dataset & near-universal\\
+Neurologist / expert review & rare\\
+Inter-rater agreement & rare\\
+External / cross-site validation & rare\\
+Multi-centre study & very rare\\
+Prospective / real-world deployment & near-absent\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Mathematical Foundations}
+The corpus draws on a consistent mathematical toolkit: probability and Bayesian inference (uncertainty), linear algebra (representations), optimisation (Adam/SGD with cross-entropy/focal losses), attention mechanisms (transformers), graph theory (GNNs), and signal processing (Welch PSD, wavelet, Hjorth). Information-theoretic measures (entropy, mutual information) recur in both feature engineering and factor-graph models. A notable gap is the near-absence of distribution-free uncertainty (conformal prediction), which we argue is the right mathematical basis for safe clinical escalation.
+
+\section{Novelty and Opportunity Matrix}
+Following best practice, we identify \emph{opportunities} rather than asserting novelty (Table~\ref{tab:nov}). The largest gaps---agentic AI, RAG-grounded explanation, responsible-AI governance, and human-in-the-loop clinical integration---are precisely the axes of this review's forward architecture.
+\begin{table}[t]\centering\caption{Novelty/opportunity matrix.}\label{tab:nov}
+\footnotesize\begin{tabular}{lll}\toprule
+Topic & Literature coverage & Opportunity\\\midrule
+RAG + EEG & very low & very high\\
+Agentic AI & absent & very high\\
+Responsible-AI governance & very low & high\\
+Clinical XAI & moderate & high\\
+Human-in-the-loop & low & high\\
+Multimodal (EEG+ECG+video) & low & high\\
+Federated / privacy & very low & high\\
+Foundation models (clinical sens) & low & high\\\bottomrule
+\end{tabular}\end{table}
+
+\section{Future Research Roadmap}
+We organise recommendations by theme. \textbf{Data:} larger multi-centre, multi-population (paediatric+adult) corpora with subject-wise splits. \textbf{Evaluation:} a leakage-free community benchmark ranked by subject-wise sensitivity, mandatory per-subject and calibration reporting. \textbf{Methods:} foundation models tested at clinical sensitivity targets, federated and continual learning for cross-site robustness, conformal uncertainty. \textbf{Deployment:} agentic, RAG-grounded, governed systems with human-in-the-loop escalation, audit, and kill-switch. \textbf{Translation:} prospective trials, regulatory approval, and post-deployment monitoring. \textbf{Hardware:} subject-wise consumer-grade and wearable benchmarks.
+
+\section{AI-Assisted Writing Statement}
+In the preparation of this review, AI assistance was used for literature organisation, table generation, language editing, and summarisation; all factual claims, classifications, and critical analyses were verified by the authors against the primary sources. Conclusions and the conceptual framework are the authors' own. This disclosure follows emerging journal policy on transparent AI use.
+
+\section{Reproducibility and Governance}
+Table~\ref{tab:repgov} summarises the reproducibility and governance posture we recommend---and which the companion empirical study adopts. The curated 50-work corpus, extraction scripts, and per-paper comparison data are released.
+\begin{table}[t]\centering\caption{Reproducibility and governance checklist.}\label{tab:repgov}
+\footnotesize\begin{tabular}{ll}\toprule
+Area & Element\\\midrule
+Reproducibility & released corpus + scripts, fixed seeds, env spec\\
+Data governance & public/de-identified data, provenance documented\\
+Model governance & versioning, model cards, evaluation reports\\
+Responsible AI & fairness metrics, transparency, human oversight\\
+Security & privacy protection, audit logs, access control\\
+Reporting & limitations, CIs, error analysis, external-validity notes\\\bottomrule
+\end{tabular}\end{table}

@@ -1,0 +1,30 @@
+\section{Bibliometric and Categorical Analysis}
+The corpus, augmented with foundational anchors, exhibits clear bibliometric structure. Publication volume accelerates from 2021 to a 2025 peak (Fig.~\ref{fig:trend}), driven by transformer and foundation-model adoption. Categorically, survey/review works \citep{rev_frontiers25,rev_seizpred25,rev_interp25,rev_prisma26,boonyakitanont19,einshoka23,yuan22,amrani21} establish the field's contours; technical contributions cluster in deep learning and transformers; and explainable/responsible-AI works \citep{gabeff21,raab22,vieira23,rathod22,mansour20,patil26} form a small but growing thread. Table~\ref{tab:litmatrix} is the anchor comparison matrix.
+\begin{table*}[t]\centering\caption{Literature comparison matrix of foundational and high-impact anchors.}\label{tab:litmatrix}
+\footnotesize\begin{tabular}{lllll}\toprule
+Work & Year & Category & Focus & Ref\\\midrule
+Frontiers systematic review & 2025 & Survey & ML/DL/multimodal/clinical translation & \cite{rev_frontiers25}\\
+AI seizure-prediction review & 2025 & Survey & prediction, wearables, datasets & \cite{rev_seizpred25}\\
+Interpretable-AI evaluation & 2025 & Survey/XAI & XAI methods for epilepsy & \cite{rev_interp25}\\
+PRISMA NN review (341 studies) & 2026 & Survey & CNN/transformer/GNN/XAI & \cite{rev_prisma26}\\
+Boonyakitanont feature review & 2019 & Survey & feature extraction + evaluation & \cite{boonyakitanont19}\\
+Ein Shoka concepts review & 2023 & Survey & techniques, challenges, trends & \cite{einshoka23}\\
+Yuan neuroimaging ML review & 2022 & Survey & diagnosis + prognosis & \cite{yuan22}\\
+Amrani DL systematic review & 2021 & Survey & DL for EEG & \cite{amrani21}\\
+Zhang cross-subject transfer & 2020 & ML/DL & deep transfer learning & \cite{zhang20}\\
+Zhao interpretable ML & 2023 & ML/XAI & interpretable detection & \cite{zhao23}\\
+Ijaz feature + XAI & 2024 & ML/XAI & feature selection + explainable & \cite{ijaz24}\\
+Tawhid CNN-LSTM & 2022 & DL & hybrid detection & \cite{tawhid22}\\
+Das 1D/2D CNN & 2024 & DL & feature representation & \cite{das24}\\
+Dong TCN+BiLSTM & 2024 & DL & temporal detection & \cite{dong24}\\
+Ke conv-transformer & 2022 & Transformer & seizure detection & \cite{ke22}\\
+Rukhsar lightweight transformer & 2023 & Transformer & cross-patient & \cite{rukhsar23}\\
+Potter unsupervised TS-transformer & 2023 & Transformer & identification & \cite{potter23}\\
+Chen spiking conv-transformer & 2024 & Transformer & detection + prediction & \cite{chen24}\\
+Gabeff interpreting DL & 2021 & XAI & model interpretation & \cite{gabeff21}\\
+Raab XAI4EEG & 2022 & XAI & spectral + spatio-temporal & \cite{raab22}\\
+Patil hybrid + multimodal XAI & 2026 & XAI/Multimodal & transformer-DenseNet & \cite{patil26}\\\bottomrule
+\end{tabular}\end{table*}
+
+\section{Integrated Critical Appraisal}
+Reading the technical and clinical literatures together yields an integrated appraisal. The field is \emph{technically mature} (diverse, performant architectures), \emph{methodologically immature} (epoch-level evaluation predominates, calibration and subject-wise reporting are rare), and \emph{clinically pre-translational} (external validation, multi-centre studies, and prospective deployment are near-absent). The explainability and responsible-AI threads, though growing \citep{vieira23,rathod22,mansour20,ijaz24}, remain disconnected from clinical workflow and governance. The throughline of this review---that progress now depends on honest evaluation and governed deployment rather than new architectures---is reinforced by every perspective: technical, statistical, clinical, and bibliometric.

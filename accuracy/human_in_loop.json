@@ -1,0 +1,114 @@
+{
+  "step": 21,
+  "name": "human_in_the_loop_active_learning",
+  "dataset": "CHB-MIT 20-D features",
+  "test_size": 2844,
+  "seed_labels": 150,
+  "query_batch": 100,
+  "rounds": 8,
+  "strategy_HITL_uncertainty": [
+    {
+      "round": 0,
+      "n_labelled": 150,
+      "test_accuracy": 0.7257,
+      "test_sensitivity": 0.7468
+    },
+    {
+      "round": 1,
+      "n_labelled": 250,
+      "test_accuracy": 0.8632,
+      "test_sensitivity": 0.6551
+    },
+    {
+      "round": 2,
+      "n_labelled": 350,
+      "test_accuracy": 0.8931,
+      "test_sensitivity": 0.481
+    },
+    {
+      "round": 3,
+      "n_labelled": 450,
+      "test_accuracy": 0.9114,
+      "test_sensitivity": 0.4842
+    },
+    {
+      "round": 4,
+      "n_labelled": 550,
+      "test_accuracy": 0.9237,
+      "test_sensitivity": 0.4462
+    },
+    {
+      "round": 5,
+      "n_labelled": 650,
+      "test_accuracy": 0.93,
+      "test_sensitivity": 0.4747
+    },
+    {
+      "round": 6,
+      "n_labelled": 750,
+      "test_accuracy": 0.9335,
+      "test_sensitivity": 0.4968
+    },
+    {
+      "round": 7,
+      "n_labelled": 850,
+      "test_accuracy": 0.9304,
+      "test_sensitivity": 0.4968
+    }
+  ],
+  "strategy_random_baseline": [
+    {
+      "round": 0,
+      "n_labelled": 150,
+      "test_accuracy": 0.7257,
+      "test_sensitivity": 0.7468
+    },
+    {
+      "round": 1,
+      "n_labelled": 250,
+      "test_accuracy": 0.8829,
+      "test_sensitivity": 0.6076
+    },
+    {
+      "round": 2,
+      "n_labelled": 350,
+      "test_accuracy": 0.9001,
+      "test_sensitivity": 0.5127
+    },
+    {
+      "round": 3,
+      "n_labelled": 450,
+      "test_accuracy": 0.9054,
+      "test_sensitivity": 0.4684
+    },
+    {
+      "round": 4,
+      "n_labelled": 550,
+      "test_accuracy": 0.9117,
+      "test_sensitivity": 0.4367
+    },
+    {
+      "round": 5,
+      "n_labelled": 650,
+      "test_accuracy": 0.9121,
+      "test_sensitivity": 0.4082
+    },
+    {
+      "round": 6,
+      "n_labelled": 750,
+      "test_accuracy": 0.9132,
+      "test_sensitivity": 0.3892
+    },
+    {
+      "round": 7,
+      "n_labelled": 850,
+      "test_accuracy": 0.9135,
+      "test_sensitivity": 0.3766
+    }
+  ],
+  "final_HITL_vs_random_accuracy": [
+    0.9304,
+    0.9135
+  ],
+  "labels_to_reach_HITL_final": 850
+}
