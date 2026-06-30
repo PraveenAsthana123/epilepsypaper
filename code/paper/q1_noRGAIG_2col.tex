@@ -56,7 +56,7 @@ Siena & 1 & scalp, adult focal\\
 Unstated in abstract & 26 & reproducibility concern\\\bottomrule
 \end{tabular}\end{table}
 
-Our work is complementary: rather than a new architecture, we quantify the protocol-induced gap with a deliberately transparent pipeline so the gap cannot be attributed to model capacity, and we add the governed-deployment layer the literature omits.
+Our work is complementary: rather than a new architecture, we quantify the protocol-induced gap with a deliberately transparent pipeline so the gap cannot be attributed to model capacity, and we report the clinically relevant metrics (MCC, PR-AUC, per-subject sensitivity) the leakage-inflated literature often omits.
 
 \section{Data Source Report}
 \subsection{Dataset overview}
@@ -112,7 +112,7 @@ Cross-channel aggregation & $\times2$ & mean + std\\\midrule
 Per-channel 10-D vectors are aggregated by mean and standard deviation across channels, yielding a fixed 20-D representation invariant to electrode count. Features are standardised (zero mean, unit variance) using training-fold statistics only --- a deliberate guard against the very leakage the paper studies.
 
 \section{Model Architecture}
-A class-balanced Random Forest (300 trees, Gini, \texttt{class\_weight=balanced}) is the production classifier. It is chosen \emph{deliberately}: a transparent, low-variance model so the protocol-induced gap cannot be attributed to over-parameterisation. The MCP tool boundary (Sec.~\ref{sec:rgaig}) permits hot-swapping to a CNN-BiLSTM without changing the calling surface.
+A class-balanced Random Forest (300 trees, Gini, \texttt{class\_weight=balanced}) is the primary classifier. It is chosen \emph{deliberately}: a transparent, low-variance model so the protocol-induced gap cannot be attributed to over-parameterisation. A common feature interface permits swapping in alternative models (SVM, gradient boosting, MLP), benchmarked in Sec.~\ref{sec:bench}.
 
 \section{Experimental Protocol}
 Two protocols are evaluated on the \emph{same} feature--model pipeline: (i) 5-fold stratified CV (epoch-level) on Bonn/UCI; (ii) Leave-One-Subject-Out on CHB-MIT --- train on 23 subjects, test on the held-out subject, rotated over all 24. Metrics: sensitivity, specificity, PPV, NPV, $F_1$, accuracy, AUC. Seed fixed at 42; scikit-learn 1.x; reported on a single workstation.
@@ -317,7 +317,7 @@ Subject-level bootstrap CIs; seed 42; public data & yes\\\bottomrule
 
 
 \section{Conclusion}
-Epoch-level accuracy is an illusion for the patient-independent task: the same pipeline that scores 96.99\% under leaky CV scores 35\% sensitivity under LOSO. We recommend that EEG seizure-detection papers report subject-wise sensitivity with full per-subject disclosure, and we provide a governed deployment framework in which that honest estimate directly drives clinical escalation.
+Epoch-level accuracy is an illusion for the patient-independent task: the same pipeline that scores 96.99\% under leaky CV scores 35\% sensitivity under LOSO. We recommend that EEG seizure-detection papers report subject-wise sensitivity (with MCC and PR-AUC) and full per-subject disclosure, so that reported performance reflects what a detector would achieve on an unseen patient.
 
 \small\bibliographystyle{IEEEtran}\bibliography{references}
 \end{document}
