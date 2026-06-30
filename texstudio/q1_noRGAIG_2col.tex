@@ -27,36 +27,8 @@ Epilepsy affects $\sim$50 million people worldwide and continuous EEG remains th
 
 \textbf{Contributions.} (1) We isolate leakage-induced inflation by holding features and classifier fixed and changing the validation protocol \emph{within a single dataset} (CHB-MIT epoch-5fold vs LOSO), removing the dataset confound; (2) we report a complete per-subject LOSO benchmark on CHB-MIT with pooled+macro metrics, MCC, PR-AUC and subject-level bootstrap CIs; (3) we benchmark statistical, ML, and a deep baseline under one common LOSO split, showing the gap is model-independent; (4) we add ablation, threshold/operating-point, and failure-mode analyses; and (5) we release the full reproducible pipeline and per-subject results.
 
-\section{Related Work and Field Synthesis}
-We synthesise 50 recent works (2021--2026). Convolutional, recurrent, transformer, graph and state-space models dominate \citep{ep241003385,ep230103470,ep251108861,ep260113234}, with autoencoders \citep{ep250820535}, stereo-EEG graph networks \citep{ep250215198}, and device-agnostic foundation models \citep{ep251108861} reporting strong epoch-level scores. A smaller body targets inter-patient generalisation via domain-adversarial training \citep{ep250515203} and reviews leakage in neuroimaging \citep{ep210203336}; consumer-grade acquisition relevant to scalable screening is emerging \citep{ep251101879,ep220706914}. Table~\ref{tab:arch} summarises the architecture distribution and Table~\ref{tab:dsuse} the dataset reliance.
-
-\begin{table}[h]\centering\caption{Architecture families across 47 surveyed epilepsy-EEG works.}\label{tab:arch}
-\begin{tabular}{lcl}\toprule
-Family & \# & Trend\\\midrule
-Transformer & 6 & rising 2023--26\\
-Graph NN / GAT & 5 & rising (stereo-EEG)\\
-CNN (compact/scaled/pruned) & 4 & stable\\
-LSTM / RNN / CNN-BiLSTM & 4 & stable\\
-Foundation model & 3 & emerging 2024--26\\
-Autoencoder & 2 & niche\\
-CNN-Mamba / SSM & 1 & newest (2026)\\
-Federated & 1 & emerging\\
-Classical (RF/wavelet/entropy) & 4 & interpretable baseline\\
-Other DL & 18 & ---\\\bottomrule
-\end{tabular}\end{table}
-
-\begin{table}[h]\centering\caption{Public-dataset reliance across the surveyed corpus.}\label{tab:dsuse}
-\begin{tabular}{lcl}\toprule
-Dataset & \# papers & Modality\\\midrule
-CHB-MIT & 12 & scalp, paediatric, focal\\
-TUH / TUSZ & 9 & scalp, large heterogeneous\\
-Bonn & 4 & single-channel (A--E)\\
-Neonatal (Helsinki) & 4 & scalp, neonatal\\
-Siena & 1 & scalp, adult focal\\
-Unstated in abstract & 26 & reproducibility concern\\\bottomrule
-\end{tabular}\end{table}
-
-Our work is complementary: rather than a new architecture, we quantify the protocol-induced gap with a deliberately transparent pipeline so the gap cannot be attributed to model capacity, and we report the clinically relevant metrics (MCC, PR-AUC, per-subject sensitivity) the leakage-inflated literature often omits.
+\section{Related Work}
+Most recent EEG seizure detectors report near-perfect epoch-level accuracy with CNN, recurrent, transformer, or graph models \citep{ep241003385,ep251108861,ep250215198}; a smaller body targets inter-patient generalisation \citep{ep250515203} and warns of leakage in neuroimaging evaluation \citep{ep210203336}. We do not propose a new architecture: we hold a transparent feature+classifier pipeline fixed and quantify how the \emph{validation protocol alone} changes reported performance, reporting the clinically relevant metrics (MCC, PR-AUC, per-subject sensitivity) that leakage-inflated accuracy hides. A full architecture/dataset taxonomy is deferred to the companion systematic review.
 
 \section{Data Source Report}
 \subsection{Dataset overview}
@@ -259,7 +231,9 @@ MCC & 0.644 & 0.346\\
 Balanced accuracy & 0.746 & 0.624\\
 PR-AUC & 0.788 & 0.398\\\bottomrule
 \end{tabular}\end{table}
-\textbf{Pooled vs macro.} We report \emph{both} the pooled-confusion sensitivity (27.5\%) and the macro per-subject mean (35.1\%, the headline); their gap reflects between-subject variance (Table~\ref{tab:full}). \textbf{Clinical operating points.} Under LOSO, sensitivity at fixed specificity is 46\% @ 90\%, 36\% @ 95\%, and 19\% @ 99\%.
+\textbf{Pooled vs macro.} We report \emph{both} the pooled-confusion sensitivity (27.5\%) and the macro per-subject mean (35.1\%, the headline); their gap reflects between-subject variance (Table~\ref{tab:full}). \textbf{Clinical operating points.} Under LOSO, sensitivity at fixed specificity is 46\% @ 90\%, 36\% @ 95\%, and 19\% @ 99\% (PR-AUC 0.40, ROC-AUC 0.78). \textbf{Calibration.} The probabilities are well-calibrated under LOSO (Brier 0.085, ECE 0.034; Fig.~\ref{fig:cal}), so these operating points are trustworthy rather than artefacts of mis-scaled scores.
+\begin{figure}[h]\centering\includegraphics[width=0.82\columnwidth]{calibration.png}
+\caption{Reliability (calibration) curve under CHB-MIT LOSO.}\label{fig:cal}\end{figure}
 
 \section{Subjective and Qualitative Analysis}
 Beyond the quantitative battery, we assess the results qualitatively against clinical expectation. \textbf{Clinical plausibility.} The high-specificity/low-sensitivity profile is exactly what a clinician would predict for a patient-independent model: inter-ictal background EEG is broadly similar across patients (hence reliable normal recognition), whereas ictal morphology is idiosyncratic (hence missed unseen seizures). The model's errors are therefore \emph{interpretable}, not random. \textbf{Per-subject narrative.} Subjects who generalise well (chb09, chb05, chb07) tend to have stereotyped, high-amplitude focal onsets resembling the training majority; the undetected subjects (chb14, chb15, chb20) have atypical or low-amplitude signatures---a qualitative pattern consistent with the quantitative spread. \textbf{Expert-rubric perspective.} Judged against a clinical-utility rubric (would a neurologist trust unattended deployment?), the honest 35\% sensitivity correctly fails the bar for autonomous use but passes for a triage-with-escalation role, where uncertain cases are routed to a clinician.

@@ -1,0 +1,14 @@
+{
+  "name": "clinical_metrics",
+  "dataset": "CHB-MIT LOSO (20-D, balanced RF)",
+  "brier_score": 0.0847,
+  "ece_10bin": 0.0341,
+  "roc_auc": 0.7784,
+  "pr_auc": 0.3983,
+  "sensitivity_at_specificity": {
+    "90": 0.4595,
+    "95": 0.3563,
+    "99": 0.1861
+  },
+  "note": "uncalibrated RF; figures = calibration, pr_curve, roc_curve_loso, threshold_tradeoff"
+}

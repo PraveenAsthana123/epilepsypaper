@@ -58,6 +58,31 @@ called submission-ready until it passes every MANDATORY rule below.**
 21. Per-paper evidence table (dataset/subjects/task/split/LOSO?/code?/limitation) + risk-of-bias.
 22. Verified BibTeX (no AUTHOR-TO-VERIFY, no unverified future-year entries); remove off-topic papers.
 
+## I. PAPER IDENTITY (each paper = ONE contribution; no overlap)
+- **q1_noRGAIG (empirical):** validation-aware benchmark ONLY. Sections allowed: intro,
+  *short* related work, data, preprocessing, features, validation, same-dataset comparison,
+  model benchmark, error analysis, metrics/calibration, limitations, conclusion.
+  **FORBIDDEN here:** RGAIG/MCP/RAG/AIOps/governance/agentic, architecture-family survey
+  tables, dataset-reliance survey tables, long future-work lists, deployment architecture.
+- **q1_full (RGAIG = systems/deployment paper):** governance/deployment framework. Keep the
+  honest LOSO result only as *motivation*; do NOT repeat full data/feature/benchmark detail or
+  claim RGAIG improves accuracy. Focus: architecture, audit, drift, human escalation, KPIs.
+- **review (systematic review):** PRISMA + evidence synthesis. The taxonomy/survey tables live
+  HERE, not in the empirical paper.
+
+## X. RECURRING MISTAKES — do not repeat (brutal log)
+1. **Scope-creep into the empirical paper.** Adding review surveys, governance, RL/RAG, or a
+   15-figure kitchen sink to q1_noRGAIG. Result: float-overload build hangs + all 3 papers read
+   the same (salami-slicing). FIX: the empirical paper subtracts, never pads; survey content
+   belongs to the review.
+2. **Padding for page count.** Never add breadth to hit "10 pages". Pages come from REAL
+   analyses (calibration, benchmark, error analysis), or the paper is shorter. Honesty > length.
+3. **Self-promotional language** ("top 1%", "Q1-ready", "clinical-grade", "state-of-the-art").
+4. **Leftover cross-references** (e.g. `\ref{sec:rgaig}` in the no-RGAIG paper) — grep before commit.
+5. **Dataset/protocol confound** presented as pure protocol effect. Same-dataset control is the centre.
+6. **Committing LaTeX build artifacts** (.aux/.log/.out) — gitignored.
+7. **Unverified citations** (AUTHOR-TO-VERIFY, 2026 preprints) shipped in a submission bib.
+
 ## Per-paper alignment status (updated as fixes land)
 | Rule | q1_full (RGAIG) | q1_noRGAIG | review |
 |---|---|---|---|
